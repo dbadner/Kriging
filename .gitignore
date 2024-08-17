@@ -1,6 +1,9 @@
 .vs/
 .vscode/
+packages/
 Debug/
 Release/
 x64/
-packages/
+*.vcxproj.user
+*.vcxproj.filters
+*.DotSettings.user
