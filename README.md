@@ -12,11 +12,11 @@ The core kriging engines are in KrigingEngine.cpp.
 
 ## To Run
 Currently to test the kriging engines, the Test project can be used. 
-* KrigingEngineTests.cpp -> FullBlockModelKrigingTest method can be used/modified to run the engine on a full block model
-* KrigingEngineTests.cpp -> OrdinaryKrigingOneBlock test methods can be used/updated to run one block (point)
+* KrigingEngineTests.cpp -> FullBlockModelKrigingTest test method can be used/modified to run the engine on a full block model
+* KrigingEngineTests.cpp -> OrdinaryKrigingOneBlock... test methods can be used/updated to run one block (point)
 
 ## Next steps
-There are many simplifications in the current POC solution, as indicated by the many TODOs throughout the solution. Some key next steps are as follows:
+There are many simplifications in the current POC solution, as indicated by the many TODOs throughout. Some key next steps are as follows:
 * Support file input and output
 * Add input data validation with unit testing
 * Add proper CLI support with input args and summary output
