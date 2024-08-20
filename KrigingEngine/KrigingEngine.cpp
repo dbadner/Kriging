@@ -116,16 +116,59 @@ double KrigingEngine::KrigeOneBlock(double blockX, double blockY, double blockZ)
       subsetX, subsetY, subsetZ, subsetGrade, mParameters.VariogramParameters);
 }
 
-// Kriging for all blocks
+//Kriging for all blocks in parallel
 void KrigingEngine::RunKriging()
 {
-   // TODO: Parallelize and run sets of blocks in batches to optimize performance
-
-   // Loop over blocks
-   for (int i = 0; i < mBlocks.I.size(); i++)
+   const int numBlocks = mBlocks.I.size();
+   if (numBlocks < 1)
    {
-      mBlocks.Grade[i] = KrigeOneBlock(mBlocks.X[i], mBlocks.Y[i], mBlocks.Z[i]);
+      return;
    }
+
+   // Process blocks in batches
+   // TODO: Confirm thread safety. Assess further threading optimization
+   int batchSize = GetThreadBatchSize(numBlocks);
+   std::vector<std::future<void>> futures;
+   for (int i = 0; i < numBlocks; i += batchSize)
+   {
+      futures.push_back(std::async(std::launch::async, [this, i, batchSize, numBlocks]() {
+         int end = std::min(i + batchSize, numBlocks);
+         for (int j = i; j < end; ++j)
+         {
+            mBlocks.Grade[j] = KrigeOneBlock(mBlocks.X[j], mBlocks.Y[j], mBlocks.Z[j]);
+         }
+         }));
+   }
+
+   // Wait for all tasks to complete
+   for (auto& fut : futures)
+   {
+      fut.get();
+   }
+}
+
+// Define the batch size for parallel processing based on # blocks and hardware specifications
+int KrigingEngine::GetThreadBatchSize(int numBlocks)
+{
+   int numThread;
+   try
+   {
+      numThread = std::thread::hardware_concurrency();
+      if (numThread == 0)
+      {
+         throw std::runtime_error("Unable to determine the number of threads.");
+      }
+   }
+   catch (const std::exception& e)
+   {
+      int defaultNumThread = 8;
+      std::cerr << "Exception caught: " << e.what() << ". Using default number of threads: " << defaultNumThread << std::endl;
+      numThread = defaultNumThread;
+   }
+   numThread = std::min(numThread, numBlocks);
+
+   // Round the batch size up to the nearest whole number
+   return (numBlocks + numThread - 1) / numThread;
 }
 
 // Returns the Euclidean distance between two points

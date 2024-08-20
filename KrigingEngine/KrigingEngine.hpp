@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <future>
 #include <cmath>
+#include <iostream>
 #include "include/Eigen/Dense"
 #include "Blocks.hpp"
 #include "Composites.hpp"
@@ -25,4 +27,5 @@ private:
    const Composites& mComposites;
    Blocks& mBlocks;
    static double EuclideanDistance(double x1, double y1, double z1, double x2, double y2, double z2);
+   static int GetThreadBatchSize(int numBlocks);
 };

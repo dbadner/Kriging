@@ -186,12 +186,8 @@ namespace KrigingEngineTests
 
    TEST_F(KrigingTests, FullBlockModelKrigingTest)
    {
-      // Create parameters
-      VariogramParameters varParameters;
-      varParameters.Range = 50.0;
-      varParameters.Sill = 1.0;
-      varParameters.Nugget = 0.1;
-      varParameters.Structure = VariogramParameters::StructureType::Spherical;
+      // Input parameters
+      int numComposites = 10000;
 
       BlockModelInfo modelInfo;
       modelInfo.MinX = 0;
@@ -200,9 +196,15 @@ namespace KrigingEngineTests
       modelInfo.MaxX = 100;
       modelInfo.MaxY = 100;
       modelInfo.MaxZ = 100;
-      modelInfo.BlockCountI = 20;
-      modelInfo.BlockCountJ = 20;
-      modelInfo.BlockCountK = 20;
+      modelInfo.BlockCountI = 100;
+      modelInfo.BlockCountJ = 100;
+      modelInfo.BlockCountK = 100;
+
+      VariogramParameters varParameters;
+      varParameters.Range = 50.0;
+      varParameters.Sill = 1.0;
+      varParameters.Nugget = 0.1;
+      varParameters.Structure = VariogramParameters::StructureType::Spherical;
 
       KrigingParameters parameters;
       parameters.Type = KrigingParameters::KrigingType::Ordinary;
@@ -220,7 +222,7 @@ namespace KrigingEngineTests
       std::mt19937 gen(rd());
       std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-      for (int i = 0; i < 1000; i++)
+      for (int i = 0; i < numComposites; i++)
       {
          composites.X.push_back(dist(gen) * 100.0);
          composites.Y.push_back(dist(gen) * 100.0);

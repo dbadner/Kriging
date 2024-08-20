@@ -24,5 +24,5 @@ There are many simplifications in the current POC solution, as indicated by the 
 * Support anisotropy, directional variogams with rotations, nested structures, etc.
 * Add different types of kriging (currently only Ordinary Kriging is supported)
 * Add block discretization (currently simplifies as point kriging at block centers)
-* Parallelization (RunKriging method - batch blocks)
+* Parallelization - confirm thread safety
 * Further code optimization - KDTree improvements, data structures, build optimization, etc.
