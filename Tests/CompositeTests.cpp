@@ -15,7 +15,6 @@ namespace CompositeTests
       composites.X = { 1.0, 2.0, 3.0, 4.0, 5.0 };
       composites.Y = { 1.0, 2.0, 3.0, 4.0, 5.0 };
       composites.Z = { 1.0, 2.0, 3.0, 4.0, 5.0 };
-      composites.Domain = { 1.0, 2.0, 3.0, 4.0, 5.0 };
       composites.Grade = { 1.0, 2.0, 3.0, 4.0, 5.0 };
 
       composites.BuildKDTreeIndex();
@@ -97,7 +96,6 @@ namespace CompositeTests
       composites.X = randomData;
       composites.Y = randomData;
       composites.Z = randomData;
-      composites.Domain = randomData;
       composites.Grade = randomData;
 
       // Build the Kd Tree

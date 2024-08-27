@@ -15,17 +15,18 @@ class Composites
    typedef KDTreeSingleIndexAdaptor<
       L2_Simple_Adaptor<double, Composites>,
       Composites,
-      3 /* dim: X,Y,Z*/
+      3
    > KDTree;
 
    KDTree* mKdTree;
 
 public:
    std::vector<double> X, Y, Z;
-   std::vector<double> Domain;
+   std::vector<int> Domain; //TODO: to be implemented with geology matching
    std::vector<double> Grade;
 
    Composites();
+   ~Composites();
 
    // Method to build kd tree index
    void BuildKDTreeIndex();

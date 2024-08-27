@@ -7,7 +7,7 @@
 class Blocks
 {
 public:
-   std::vector<double> I, J, K; // Block indices
+   std::vector<int> I, J, K; // Block indices
    std::vector<double> X, Y, Z; // Block centroids
    std::vector<double> Grade;
 
@@ -16,4 +16,4 @@ public:
 
 //TODO: Add domain and read in blocks from file for geology matching
 
-//TODO: Consider performance impact of changing to full OOP and defining a 'Block' class (and 'Composite' class)
+//TODO: Refactor this depending on future block model file format and I/O TBC; for now storing blocks inefficiently in memory for concept

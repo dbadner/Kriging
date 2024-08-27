@@ -5,6 +5,11 @@ Composites::Composites()
    
 }
 
+Composites::~Composites()
+{
+    delete mKdTree;
+}
+
 //TODO: Refactor so KDTree is built in a constructor for robustness. Maybe move to new class
 void Composites::BuildKDTreeIndex()
 {
@@ -28,7 +33,7 @@ NearestCompositesResult Composites::FindNearestComposites(double x, double y, do
 
    // Filter out distances greater than maxDist
    NearestCompositesResult result;
-   for (size_t i = 0; i < indices.size(); i++)
+   for (size_t i = 0; i < indices.size(); ++i)
    {
       if (distancesSq[i] <= maxDistSq)
       {

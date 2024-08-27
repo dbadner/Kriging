@@ -187,7 +187,7 @@ namespace KrigingEngineTests
    TEST_F(KrigingTests, FullBlockModelKrigingTest)
    {
       // Input parameters
-      int numComposites = 10000;
+      int numComposites = 1000000;
 
       BlockModelInfo modelInfo;
       modelInfo.MinX = 0;
