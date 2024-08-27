@@ -46,7 +46,8 @@ double KrigingEngine::OrdinaryKrigingPoint(double x0, double y0, double z0,
 {
 	size_t n = xs.size();
 
-	if (n != ys.size() || n != zs.size() || n != values.size()) {
+	if (n != ys.size() || n != zs.size() || n != values.size()) 
+	{
 		throw std::invalid_argument("Input vectors must have the same size");
 	}
 
