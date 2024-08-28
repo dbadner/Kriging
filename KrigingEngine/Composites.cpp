@@ -1,10 +1,5 @@
 #include "Composites.hpp"
 
-Composites::Composites()
-{
-   
-}
-
 Composites::~Composites()
 {
     delete mKdTree;
@@ -19,7 +14,7 @@ void Composites::BuildKDTreeIndex()
 }
 
 // TODO: Optimize this method and nanoflann parameters for improved performance
-NearestCompositesResult Composites::FindNearestComposites(double x, double y, double z, int n, double maxDist) const
+NearestCompositesResult Composites::FindNearestComposites(const double x, const double y, const double z, const int n, const double maxDist) const
 {
    double point[3] = { x, y, z };
    double maxDistSq = maxDist * maxDist;

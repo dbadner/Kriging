@@ -1,11 +1,15 @@
-#include "pch.h"
-#include "../KrigingEngine/Composites.hpp"
-#include "../KrigingEngine/Composites.cpp"
-//TODO: Update solution structure so cpp references are not needed in test project
 #include <chrono>
 #include <iostream>
 #include <vector>
 
+//TODO: Update solution structure so cpp references are not needed in test project
+#include "gtest/gtest.h"
+#include "../KrigingEngine/Composites.hpp"
+#include "../KrigingEngine/Composites.cpp"
+
+/**
+ * @brief Unit tests for composite class
+ */
 namespace CompositeTests
 {
    //TODO: Create a test fixture and initialize shared objects
@@ -75,8 +79,6 @@ namespace CompositeTests
       return nearestComposites;
    }
 
-   //TODO: Define flag for explicit test cases
-   //#ifdef EXPLICIT_TESTS_ENABLED
    TEST(PerformanceTest, KDTreeFasterThanNaive)
    {
       //TODO: Pass multiple pairs of Composites and Blocks into test method for performance testing
@@ -140,5 +142,4 @@ namespace CompositeTests
       // Assert that duration1 is less than duration2
       ASSERT_LT(duration1, duration2);
    }
-   //#endif
 }

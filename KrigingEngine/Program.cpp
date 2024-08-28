@@ -3,6 +3,9 @@
 #include "KrigingParameters.hpp"
 #include "KrigingEngine.hpp"
 
+/**
+ * @brief Entry point for the console application. 
+ */
 int main() 
 {
    // Read in kriging parameters from file
@@ -23,8 +26,7 @@ int main()
    composites.BuildKDTreeIndex();
 
    // Perform kriging
-   KrigingEngine krigingEngine(parameters, composites, blocks);
-   krigingEngine.RunKriging();
+   KrigingEngine::RunKriging(blocks, parameters, composites);
 
    // Output summary statistics
    // TODO: calculate and output summary statistics

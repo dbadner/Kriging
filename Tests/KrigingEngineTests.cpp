@@ -1,7 +1,7 @@
-#include "pch.h"
 #include <chrono> 
 #include <random>
 
+#include "gtest/gtest.h"
 #include "../KrigingEngine/KrigingEngine.hpp"
 #include "../KrigingEngine/KrigingEngine.cpp"
 #include "../KrigingEngine/KrigingParameters.hpp"
@@ -9,40 +9,44 @@
 namespace KrigingEngineTests
 {
 #pragma region VariogramTests
-   class VariogramTests : public ::testing::Test {
+
+   /**
+    * @brief Unit tests for variogram functions
+    */
+   class VariogramTests : public ::testing::Test
+   {
    protected:
-      VariogramParameters parameters;
-      const double maxError = 0.0001;
+      VariogramParameters mParameters = {};
+      const double mMaxError = 0.0001;
 
-      void SetUp() override {
+      void SetUp() override
+      {
          // Initialize VariogramParameters
-         parameters.Range = 200.0;
-         parameters.Sill = 1.0;
-         parameters.Nugget = 0.1;
-         parameters.Structure = VariogramParameters::StructureType::Spherical;
-      }
-
-      void TearDown() override {
-
+         mParameters.Range = 200.0;
+         mParameters.Sill = 1.0;
+         mParameters.Nugget = 0.1;
+         mParameters.Structure = VariogramParameters::StructureType::Spherical;
       }
    };
-   TEST_F(VariogramTests, SphericalBasicResultValid) {
+   TEST_F(VariogramTests, SphericalBasicResultValid)
+   {
 
       double h = 201;
-      double var = KrigingEngine::Variogram(h, parameters);
-      double c = KrigingEngine::Covariance(h, parameters);
+      double var = KrigingEngine::Variogram(h, mParameters);
+      double c = KrigingEngine::Covariance(h, mParameters);
 
       // Test variogram value
-      EXPECT_NEAR(parameters.Sill, var, maxError);
+      EXPECT_NEAR(mParameters.Sill, var, mMaxError);
       // Test covariance
-      EXPECT_NEAR(0, c, maxError);
+      EXPECT_NEAR(0, c, mMaxError);
    }
 
-   TEST_F(VariogramTests, ExponentialBasicResultValid) {
+   TEST_F(VariogramTests, ExponentialBasicResultValid)
+   {
 
       double h = 201;
 
-      auto localParameters = parameters;
+      auto localParameters = mParameters;
       localParameters.Structure = VariogramParameters::StructureType::Exponential;
 
       double var = KrigingEngine::Variogram(h, localParameters);
@@ -55,11 +59,12 @@ namespace KrigingEngineTests
       EXPECT_NEAR(0, c, 0.1);
    }
 
-   TEST_F(VariogramTests, GaussianBasicResultValid) {
+   TEST_F(VariogramTests, GaussianBasicResultValid)
+   {
 
       double h = 201;
 
-      auto localParameters = parameters;
+      auto localParameters = mParameters;
       localParameters.Structure = VariogramParameters::StructureType::Gaussian;
 
       double var = KrigingEngine::Variogram(h, localParameters);
@@ -72,16 +77,17 @@ namespace KrigingEngineTests
       EXPECT_NEAR(0, c, 0.1);
    }
 
-   TEST_F(VariogramTests, LagZeroReturnsNuggetValue) {
+   TEST_F(VariogramTests, LagZeroReturnsNuggetValue)
+   {
 
       double h = 0;
-      double var = KrigingEngine::Variogram(h, parameters);
-      double c = KrigingEngine::Covariance(h, parameters);
+      double var = KrigingEngine::Variogram(h, mParameters);
+      double c = KrigingEngine::Covariance(h, mParameters);
 
       // Test variogram value
-      EXPECT_NEAR(parameters.Nugget, var, maxError);
+      EXPECT_NEAR(mParameters.Nugget, var, mMaxError);
       // Test covariance
-      EXPECT_NEAR(parameters.Sill - parameters.Nugget, c, maxError);
+      EXPECT_NEAR(mParameters.Sill - mParameters.Nugget, c, mMaxError);
    }
 
    // TODO: Add more unit tests to check calculated values on the actual variogram fit curves with the different structure types
@@ -90,21 +96,22 @@ namespace KrigingEngineTests
 
 #pragma region KrigingTests
 
-   class KrigingTests : public ::testing::Test {
+   /**
+    * @brief Unit tests for kriging engine
+    */
+   class KrigingTests : public ::testing::Test
+   {
    protected:
-      VariogramParameters mParameters;
+      VariogramParameters mParameters = {};
       const double mMaxError = 1e-5;
 
-      void SetUp() override {
+      void SetUp() override
+      {
          // Initialize VariogramParameters
          mParameters.Range = 5.0;
          mParameters.Sill = 1.0;
          mParameters.Nugget = 0.1;
          mParameters.Structure = VariogramParameters::StructureType::Spherical;
-      }
-
-      void TearDown() override {
-
       }
    };
 
@@ -172,7 +179,6 @@ namespace KrigingEngineTests
       ASSERT_NEAR(0.8, okResult, 0.1);
 
       // Define second point to be estimated
-      // Define the point to be estimated
       double x1 = 1.5;
       double y1 = 1.5;
       double z1 = 1.5;
@@ -239,11 +245,8 @@ namespace KrigingEngineTests
       // Create Blocks
       Blocks blocks(modelInfo);
 
-      // Create KrigingEngine instance
-      KrigingEngine krigingEngine(parameters, composites, blocks);
-
-      // Perform kriging on the set of blocks
-      krigingEngine.RunKriging();
+      // Perform kriging
+      KrigingEngine::RunKriging(blocks, parameters, composites);
 
       // Stop measuring time
       auto endTime = std::chrono::high_resolution_clock::now();
@@ -256,8 +259,6 @@ namespace KrigingEngineTests
       std::cout << "Number of composites: " << composites.X.size() << std::endl;
       std::cout << "Time taken: " << duration << " milliseconds" << std::endl;
 
-      auto x = blocks.Grade[0];
-
       // Print out the first 5 block I, J, K, and grade values
       for (int i = 0; i < 5; i++)
       {
@@ -265,38 +266,6 @@ namespace KrigingEngineTests
       }
    }
 
-   TEST_F(KrigingTests, PerformanceTest)
-   {
-      // Define the coordinates and values of the composites
-      std::vector<double> xs = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> ys = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> zs = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> grades = { 0.10, 0.12, 0.82, 0.75, 0.21 };
-
-      // Define the estimation points
-      std::vector<double> estimationPointsX(10000, 2.5);
-      std::vector<double> estimationPointsY(10000, 2.5);
-      std::vector<double> estimationPointsZ(10000, 2.5);
-
-      // Start measuring time
-      auto startTime = std::chrono::high_resolution_clock::now();
-
-      // Perform ordinary kriging for each estimation point
-      for (int i = 0; i < 10000; i++)
-      {
-         double result = KrigingEngine::OrdinaryKrigingPoint(
-            estimationPointsX[i], estimationPointsY[i], estimationPointsZ[i], xs, ys, zs, grades, mParameters);
-      }
-
-      // Stop measuring time
-      auto endTime = std::chrono::high_resolution_clock::now();
-
-      // Calculate the duration in milliseconds
-      auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-
-      // Print out the time taken
-      std::cout << "Time taken for 10,000 estimations: " << duration << " milliseconds" << std::endl;
-   }
 #pragma endregion KrigingTests   
 
    int main(int argc, char** argv) {

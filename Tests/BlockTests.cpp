@@ -1,8 +1,11 @@
-#include "pch.h"
+#include "gtest/gtest.h"
 #include "../KrigingEngine/Blocks.hpp"
 #include "../KrigingEngine/Blocks.cpp"
 #include "../KrigingEngine/KrigingParameters.hpp"
 
+/**
+ * @brief Unit tests for blocks class
+ */
 namespace BlockTests
 {
    TEST(TestCreateBlocks, CreatesCorrectNumberOfComposites)
@@ -23,9 +26,6 @@ namespace BlockTests
       Blocks blocks(modelInfo);
 
       // Check that length of vectors is correct
-      EXPECT_EQ(expectedBlocks, blocks.I.size());
-      EXPECT_EQ(expectedBlocks, blocks.J.size());
-      EXPECT_EQ(expectedBlocks, blocks.K.size());
       EXPECT_EQ(expectedBlocks, blocks.X.size());
       EXPECT_EQ(expectedBlocks, blocks.Y.size());
       EXPECT_EQ(expectedBlocks, blocks.Z.size());

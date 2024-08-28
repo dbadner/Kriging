@@ -1,6 +1,3 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#pragma once
 
-const double NullValue = -99999.0;
-
-#endif
+constexpr double NullValue = -99999.0;

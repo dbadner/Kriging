@@ -1,16 +1,22 @@
 #pragma once
+
 #include <vector>
+
 #include "KrigingParameters.hpp"
 #include "Globals.hpp"
 
-// Class to store list of block locations and attributes as vectors
+/**
+ * @brief Class containing block model information.
+ */
 class Blocks
 {
 public:
-   std::vector<int> I, J, K; // Block indices
-   std::vector<double> X, Y, Z; // Block centroids
-   std::vector<double> Grade;
+   std::vector<double> X, Y, Z;  // Block centroids
+   std::vector<double> Grade;    // Block grades
 
+   /**
+    * @brief Initializes block locations based on input model information.
+    */
    Blocks(const BlockModelInfo& modelInfo);
 };
 
