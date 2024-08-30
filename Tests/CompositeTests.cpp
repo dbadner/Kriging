@@ -14,19 +14,20 @@ namespace CompositeTests
 {
    //TODO: Create a test fixture and initialize shared objects
 
-   static void CreateTestComposites(Composites& composites)
+   static Composites CreateTestComposites()
    {
-      composites.X = { 1.0, 2.0, 3.0, 4.0, 5.0 };
-      composites.Y = { 1.0, 2.0, 3.0, 4.0, 5.0 };
-      composites.Z = { 1.0, 2.0, 3.0, 4.0, 5.0 };
-      composites.Grade = { 1.0, 2.0, 3.0, 4.0, 5.0 };
+      std::vector<double> xs = {1.0, 2.0, 3.0, 4.0, 5.0};
+      std::vector<double> ys = {1.0, 2.0, 3.0, 4.0, 5.0};
+      std::vector<double> zs = {1.0, 2.0, 3.0, 4.0, 5.0};
+      std::vector<double> grades = { 1.0, 2.0, 3.0, 4.0, 5.0 };
 
-      composites.BuildKDTreeIndex();
+      Composites composites(xs, ys, zs, grades);
+      return composites;
    }
+
    TEST(FindNearestCompositesTest, ReturnsCorrectCompositeIndices)
    {
-      Composites composites;
-      CreateTestComposites(composites);
+      Composites composites = CreateTestComposites();
 
       double x = 2.432;
       double y = 2.972;
@@ -35,7 +36,6 @@ namespace CompositeTests
       double maxSearchRadius = 10000;
 
       NearestCompositesResult result = composites.FindNearestComposites(x, y, z, numComposites, maxSearchRadius);
-
 
       // Test size of result is correct
       EXPECT_EQ(3.0, result.Indices.size());
@@ -49,8 +49,7 @@ namespace CompositeTests
 
    TEST(FindNearestCompositesWithMaxDistanceTest, ReturnsCorrectNumberOfComposites)
    {
-      Composites composites;
-      CreateTestComposites(composites);
+      Composites composites = CreateTestComposites();
 
       double x = 2.5;
       double y = 2.5;
@@ -65,7 +64,8 @@ namespace CompositeTests
       EXPECT_EQ(2.0, result.Distances.size());
    }
 
-   static std::vector<double> FindNearestCompositesNaive(const Composites& composites, double x, double y, double z, int numComposites)
+   static std::vector<double> FindNearestCompositesNaive(const Composites& composites, double x, double y, double z,
+                                                         int numComposites)
    {
       std::vector<double> nearestComposites;
       for (int j = 0; j < composites.X.size(); j++)
@@ -81,27 +81,19 @@ namespace CompositeTests
 
    TEST(PerformanceTest, KDTreeFasterThanNaive)
    {
-      //TODO: Pass multiple pairs of Composites and Blocks into test method for performance testing
       int numComposites = 10000;
       int numBlocks = 100;
       int numClosestComp = 3;
       double maxSearchRadius = 10000;
 
       // Generate random composite data between 0-100
-      Composites composites;
       std::vector<double> randomData;
       for (int i = 0; i < numComposites; i++)
       {
          double randomValue = rand() % 101;
          randomData.push_back(randomValue);
       }
-      composites.X = randomData;
-      composites.Y = randomData;
-      composites.Z = randomData;
-      composites.Grade = randomData;
-
-      // Build the Kd Tree
-      composites.BuildKDTreeIndex();
+      Composites composites(randomData, randomData, randomData, randomData);
 
       std::vector<double> inputPointsX(numBlocks);
       std::vector<double> inputPointsY(numBlocks);
@@ -133,7 +125,8 @@ namespace CompositeTests
       start = std::chrono::high_resolution_clock::now();
       for (int i = 0; i < numBlocks; i++)
       {
-         std::vector<double> result = FindNearestCompositesNaive(composites, inputPointsX[i], inputPointsY[i], inputPointsZ[i], numClosestComp);
+         std::vector<double> result = FindNearestCompositesNaive(composites, inputPointsX[i], inputPointsY[i],
+                                                                 inputPointsZ[i], numClosestComp);
       }
       end = std::chrono::high_resolution_clock::now();
       auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

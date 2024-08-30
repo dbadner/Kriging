@@ -1,4 +1,4 @@
-#include <chrono> 
+#include <chrono>
 #include <random>
 
 #include "gtest/gtest.h"
@@ -13,7 +13,7 @@ namespace KrigingEngineTests
    /**
     * @brief Unit tests for variogram functions
     */
-   class VariogramTests : public ::testing::Test
+   class VariogramTests : public testing::Test
    {
    protected:
       VariogramParameters mParameters = {};
@@ -28,9 +28,9 @@ namespace KrigingEngineTests
          mParameters.Structure = VariogramParameters::StructureType::Spherical;
       }
    };
+
    TEST_F(VariogramTests, SphericalBasicResultValid)
    {
-
       double h = 201;
       double var = KrigingEngine::Variogram(h, mParameters);
       double c = KrigingEngine::Covariance(h, mParameters);
@@ -43,7 +43,6 @@ namespace KrigingEngineTests
 
    TEST_F(VariogramTests, ExponentialBasicResultValid)
    {
-
       double h = 201;
 
       auto localParameters = mParameters;
@@ -61,7 +60,6 @@ namespace KrigingEngineTests
 
    TEST_F(VariogramTests, GaussianBasicResultValid)
    {
-
       double h = 201;
 
       auto localParameters = mParameters;
@@ -79,7 +77,6 @@ namespace KrigingEngineTests
 
    TEST_F(VariogramTests, LagZeroReturnsNuggetValue)
    {
-
       double h = 0;
       double var = KrigingEngine::Variogram(h, mParameters);
       double c = KrigingEngine::Covariance(h, mParameters);
@@ -99,7 +96,7 @@ namespace KrigingEngineTests
    /**
     * @brief Unit tests for kriging engine
     */
-   class KrigingTests : public ::testing::Test
+   class KrigingTests : public testing::Test
    {
    protected:
       VariogramParameters mParameters = {};
@@ -123,12 +120,12 @@ namespace KrigingEngineTests
       double z0 = 2.5;
 
       // Define a single grade for all composites
-      const double grade = 0.12;
+      constexpr double grade = 0.12;
 
       // Define the coordinates and values of the composites
-      std::vector<double> xs = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> ys = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> zs = { 0.0, 1.0, 2.0, 3.0, 4.0 };
+      std::vector<double> xs = {0.0, 1.0, 2.0, 3.0, 4.0};
+      std::vector<double> ys = {0.0, 1.0, 2.0, 3.0, 4.0};
+      std::vector<double> zs = {0.0, 1.0, 2.0, 3.0, 4.0};
       std::vector<double> grades(5, grade);
 
       // Perform ordinary kriging
@@ -139,17 +136,16 @@ namespace KrigingEngineTests
 
    TEST_F(KrigingTests, OrdinaryKrigingOneBlockOneSampleTest)
    {
-
       // Define the point to be estimated
       double x0 = 2.5;
       double y0 = 2.5;
       double z0 = 2.5;
 
       // Define the coordinates and values of the composites
-      std::vector<double> xs = { 2.0 };
-      std::vector<double> ys = { 0.0 };
-      std::vector<double> zs = { 1.0 };
-      std::vector<double> grades = { 0.12 };
+      std::vector<double> xs = {2.0};
+      std::vector<double> ys = {0.0};
+      std::vector<double> zs = {1.0};
+      std::vector<double> grades = {0.12};
 
       // Perform ordinary kriging
       double okResult = KrigingEngine::OrdinaryKrigingPoint(x0, y0, z0, xs, ys, zs, grades, mParameters);
@@ -162,10 +158,10 @@ namespace KrigingEngineTests
       // TODO: Add more robust tests to prove the kriging results are correct; this test is just an approximate check
 
       // Define the coordinates and values of the composites
-      std::vector<double> xs = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> ys = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> zs = { 0.0, 1.0, 2.0, 3.0, 4.0 };
-      std::vector<double> grades = { 0.10, 0.12, 0.82, 0.75, 0.21 };
+      std::vector<double> xs = {0.0, 1.0, 2.0, 3.0, 4.0};
+      std::vector<double> ys = {0.0, 1.0, 2.0, 3.0, 4.0};
+      std::vector<double> zs = {0.0, 1.0, 2.0, 3.0, 4.0};
+      std::vector<double> grades = {0.10, 0.12, 0.82, 0.75, 0.21};
 
       // Define the point to be estimated
       double x0 = 2.5;
@@ -220,29 +216,31 @@ namespace KrigingEngineTests
       parameters.VariogramParameters = varParameters;
       parameters.BlockModelInfo = modelInfo;
 
-      // Create Composites
-      Composites composites;
-
       // Randomly generate composites
       std::random_device rd;
-      std::mt19937 gen(rd());
-      std::uniform_real_distribution<double> dist(0.0, 1.0);
+      std::default_random_engine gen(rd());
+      std::uniform_real_distribution<double> dist(0, 1);
+
+      std::vector<double> x, y, z, grade;
+      x.reserve(numComposites);
+      y.reserve(numComposites);
+      z.reserve(numComposites);
+      grade.reserve(numComposites);
 
       for (int i = 0; i < numComposites; i++)
       {
-         composites.X.push_back(dist(gen) * 100.0);
-         composites.Y.push_back(dist(gen) * 100.0);
-         composites.Z.push_back(dist(gen) * 100.0);
-         composites.Grade.push_back(dist(gen));
+         x.emplace_back(dist(gen) * 100);
+         y.emplace_back(dist(gen) * 100);
+         z.emplace_back(dist(gen) * 100);
+         grade.emplace_back(dist(gen));
       }
 
-      // Create KD Tree
-      composites.BuildKDTreeIndex();
+      Composites composites(x, y, z, grade);
 
       // Start measuring time
       auto startTime = std::chrono::high_resolution_clock::now();
 
-      // Create Blocks
+      // Create blocks
       Blocks blocks(modelInfo);
 
       // Perform kriging
@@ -266,10 +264,11 @@ namespace KrigingEngineTests
       }
    }
 
-#pragma endregion KrigingTests   
+#pragma endregion KrigingTests
 
-   int main(int argc, char** argv) {
-      ::testing::InitGoogleTest(&argc, argv);
+   int main(int argc, char** argv)
+   {
+      testing::InitGoogleTest(&argc, argv);
       return RUN_ALL_TESTS();
    }
 }

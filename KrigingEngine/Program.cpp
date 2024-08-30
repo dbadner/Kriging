@@ -18,12 +18,10 @@ int main()
    // Create blocks based on input range
    Blocks blocks(parameters.BlockModelInfo);
 
-   // Read in composites, trimming based on block range and Domain value
+   // Read in composites
    // TODO; TBC; dummy placeholder
-   Composites composites;
-
-   // Index composites using a KDTree
-   composites.BuildKDTreeIndex();
+   std::string csvFilePath = {};
+   Composites composites(csvFilePath, parameters.BlockModelInfo, parameters.MaxRadius);
 
    // Perform kriging
    KrigingEngine::RunKriging(blocks, parameters, composites);

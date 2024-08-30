@@ -3,8 +3,7 @@
 #include <vector>
 
 #include "include/nanoflann.hpp"
-
-using namespace nanoflann;
+#include "Blocks.hpp"
 
 /**
  * @brief Nearest composite result, comprising vectors of composite indices in order of increasing distance, and corresponding distances.
@@ -20,30 +19,26 @@ struct NearestCompositesResult
  */
 class Composites
 {
-   // Create a KD-tree of composite data
-   typedef KDTreeSingleIndexAdaptor<
-      L2_Simple_Adaptor<double, Composites>,
-      Composites,
-      3
-   > KDTree;
-
-   KDTree* mKdTree;
-   //TODO: convert to use an object rather than pointer for safety
-
 public:
-   std::vector<double> X, Y, Z;  // Composite/sample center locations
-   std::vector<int> Domain;      // TODO: to be implemented with geology matching
-   std::vector<double> Grade;    // Composite grades
-
-   ~Composites();
+   const std::vector<double> X, Y, Z; // Composite/sample center locations; cannot be modified once class is initialized
+   const std::vector<double> Grade; // Composite grades
 
    /**
-    * @brief Method to build the KdTree index.
-    *
-    * IMPORTANT: Must be called after composite X,Y,Z locations are defined.
+    * @brief Reads in composites from csv file, filtering based on block extents and search radius
     */
-   void BuildKDTreeIndex();
-   //TODO: Refactor so composites and KDTree are built in a constructor for robustness. Possibly split to separate class.
+   Composites(const std::string csvFilePath, const BlockModelInfo blockExtents, const double maxSearchRadius);
+
+   /**
+    * @brief Initializes composites by copying input vectors of x,y,z coordinates, and grades
+    *
+    * NOTE: Not memory efficient; recommended to use csv based import
+    */
+   Composites(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::vector<double>& grades);
+
+   /**
+    * @brief Dispose of Kd Tree.
+    */
+   ~Composites();
 
    /**
     * @brief Finds the nearest n composites to the given coordinates and a maximum spherical search distance.
@@ -52,7 +47,6 @@ public:
     */
    NearestCompositesResult FindNearestComposites(const double x, const double y, const double z, const int n, const double maxDist) const;
 
-   // Required methods below for nanoflann
    /**
     * @brief Required methods below for nanoflann.
     */
@@ -60,8 +54,16 @@ public:
 
    double kdtree_distance(const double* p1, const size_t idxp2) const;
 
-   double kdtree_get_pt(const size_t idx, int dim) const;
+   double kdtree_get_pt(const size_t idx, const int dim) const;
 
    template <class BBOX>
-   bool kdtree_get_bbox(BBOX& /*bb*/) const { return false; }
+   bool kdtree_get_bbox(BBOX&) const { return false; }
+
+private:
+   // Create a KD-tree of composite data
+   using KDTree = nanoflann::KDTreeSingleIndexAdaptor<nanoflann::L2_Simple_Adaptor<double, Composites>, Composites, 3>;
+   KDTree* mKdTree;
+
+   // Build the KdTree index; should only be called by the constructor
+   void BuildKdTree();
 };

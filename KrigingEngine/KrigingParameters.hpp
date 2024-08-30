@@ -29,7 +29,7 @@ struct BlockModelInfo
 {
    double MinX, MinY, MinZ;
    double MaxX, MaxY, MaxZ;
-   double BlockCountI, BlockCountJ, BlockCountK;
+   int BlockCountI, BlockCountJ, BlockCountK;
 };
 
 /**
@@ -45,11 +45,11 @@ struct KrigingParameters
       // TODO: Support other types of kriging
    };
 
-   KrigingType Type;                         // Type of kriging, not used yet
-   int Domain;                               // Domain to interpolate, not used yet
-   int MinNumComposites;                     // Minimum number of composites per block
-   int MaxNumComposites;                     // Maximum number of composites per block
-   double MaxRadius;                         // Maximum isotropic search radius
-   VariogramParameters VariogramParameters;  // Variogram parameters
-   BlockModelInfo BlockModelInfo;            // Block model definition
+   KrigingType Type; // Type of kriging, not used yet
+   int Domain; // Domain to interpolate, not used yet
+   int MinNumComposites; // Minimum number of composites per block
+   int MaxNumComposites; // Maximum number of composites per block
+   double MaxRadius; // Maximum isotropic search radius
+   VariogramParameters VariogramParameters; // Variogram parameters
+   BlockModelInfo BlockModelInfo; // Block model definition
 };

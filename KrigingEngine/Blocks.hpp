@@ -11,8 +11,8 @@
 class Blocks
 {
 public:
-   std::vector<double> X, Y, Z;  // Block centroids
-   std::vector<double> Grade;    // Block grades
+   std::vector<double> X, Y, Z; // Block centroids
+   std::vector<double> Grade; // Block grades
 
    /**
     * @brief Initializes block locations based on input model information.

@@ -97,7 +97,7 @@ double KrigingEngine::KrigeOneBlock(const double blockX, const double blockY, co
    std::vector<double> subsetZ;
    std::vector<double> subsetGrade;
 
-   for (int index : nearestComposites.Indices)
+   for (size_t index : nearestComposites.Indices)
    {
       subsetX.push_back(composites.X[index]);
       subsetY.push_back(composites.Y[index]);

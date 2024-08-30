@@ -11,7 +11,7 @@ Blocks::Blocks(const BlockModelInfo& modelInfo)
 	X.reserve(numBlocks);
 	Y.reserve(numBlocks);
 	Z.reserve(numBlocks);
-	Grade.reserve(numBlocks);
+	Grade.resize(numBlocks, NullValue); // Initialize grades as null
 
 	for (int k = 0; k < modelInfo.BlockCountK; ++k)
 	{
@@ -25,10 +25,9 @@ Blocks::Blocks(const BlockModelInfo& modelInfo)
 			{
 				double x = modelInfo.MinX + i * deltaX + deltaX / 2.0;
 
-				this->X.push_back(x);
-				this->Y.push_back(y);
-				this->Z.push_back(z);
-				this->Grade.push_back(NullValue); // Initialize Grades as null
+				X.emplace_back(x);
+				Y.emplace_back(y);
+				Z.emplace_back(z);
 			}
 		}
 	}
