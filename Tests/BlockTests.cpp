@@ -1,3 +1,5 @@
+#pragma once
+
 #include "gtest/gtest.h"
 #include "../KrigingEngine/Blocks.hpp"
 #include "../KrigingEngine/Blocks.cpp"

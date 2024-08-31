@@ -11,7 +11,7 @@ Blocks::Blocks(const BlockModelInfo& modelInfo)
 	X.reserve(numBlocks);
 	Y.reserve(numBlocks);
 	Z.reserve(numBlocks);
-	Grade.resize(numBlocks, NullValue); // Initialize grades as null
+	Grade.resize(numBlocks, NullValue); // TODO: replace this with null handling, std::optional
 
 	for (int k = 0; k < modelInfo.BlockCountK; ++k)
 	{

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Blocks.hpp"
 #include "Composites.hpp"
 #include "KrigingParameters.hpp"
@@ -6,7 +8,7 @@
 /**
  * @brief Entry point for the console application. 
  */
-int main() 
+int main(int argc, char* argv[])
 {
    // Read in kriging parameters from file
    // TODO: file input TBC; dummy placeholder
