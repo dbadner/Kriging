@@ -8,6 +8,7 @@
 //TODO: Update solution structure so cpp references are not needed in test project
 #include "gtest/gtest.h"
 #include "../KrigingLib/Composites.hpp"
+#include "TestHelpers.hpp"
 
 /**
  * @brief Unit tests for composite class
@@ -15,6 +16,33 @@
 namespace CompositeTests
 {
 	//TODO: Create a test fixture and initialize shared objects
+
+	static std::vector<double> FindNearestCompositesNaive(const Composites& composites, double x, double y, double z,
+		int numComposites)
+	{
+		std::vector<double> nearestComposites;
+		for (int j = 0; j < composites.X.size(); j++)
+		{
+			double distanceSq = pow(x - composites.X[j], 2) + pow(y - composites.Y[j], 2) + pow(z - composites.Z[j], 2);
+			nearestComposites.push_back(distanceSq);
+		}
+		std::sort(nearestComposites.begin(), nearestComposites.end());
+		nearestComposites.resize(numComposites);
+
+		return nearestComposites;
+	}
+
+	static CoordinateExtents InitCoordExtents()
+	{
+		CoordinateExtents modelExtents;
+		modelExtents.MinX = 20;
+		modelExtents.MinY = 20;
+		modelExtents.MinZ = 15;
+		modelExtents.MaxX = 100;
+		modelExtents.MaxY = 100;
+		modelExtents.MaxZ = 50;
+		return modelExtents;
+	}
 
 	TEST(FindNearestCompositesTest, ReturnsCorrectCompositeIndices)
 	{
@@ -61,21 +89,6 @@ namespace CompositeTests
 		// Test size of result is correct
 		EXPECT_EQ(2.0, result.Indices.size());
 		EXPECT_EQ(2.0, result.Distances.size());
-	}
-
-	static std::vector<double> FindNearestCompositesNaive(const Composites& composites, double x, double y, double z,
-		int numComposites)
-	{
-		std::vector<double> nearestComposites;
-		for (int j = 0; j < composites.X.size(); j++)
-		{
-			double distanceSq = pow(x - composites.X[j], 2) + pow(y - composites.Y[j], 2) + pow(z - composites.Z[j], 2);
-			nearestComposites.push_back(distanceSq);
-		}
-		std::sort(nearestComposites.begin(), nearestComposites.end());
-		nearestComposites.resize(numComposites);
-
-		return nearestComposites;
 	}
 
 	TEST(PerformanceTest, KDTreeFasterThanNaive)
@@ -135,25 +148,13 @@ namespace CompositeTests
 		ASSERT_LT(duration1, duration2);
 	}
 
-	static void InitCoordExtents(CoordinateExtents& modelExtents)
-	{
-		modelExtents.MinX = 20;
-		modelExtents.MinY = 20;
-		modelExtents.MinZ = 15;
-		modelExtents.MaxX = 100;
-		modelExtents.MaxY = 100;
-		modelExtents.MaxZ = 50;
-	}
-
 	TEST(ImportCompositesTest, ImportsCorerctNumberOfComposites)
 	{
-		// CSV file path
-		// TODO: Fix to support non-hardcoded file path
-		std::string filePath = "C:\\repos\\Kriging\\Tests\\Data\\ExComposites10.csv";
+		// Get CSV file path
+		std::string filePath = TestHelpers::GetTestDataFilePath("ExComposites10.csv");
 
 		// Create block extents for kriging
-		CoordinateExtents modelExtents;
-		InitCoordExtents(modelExtents);
+		CoordinateExtents modelExtents = InitCoordExtents();
 
 		// Search radius for kriging
 		double searchRadius = 100;
@@ -167,13 +168,11 @@ namespace CompositeTests
 
 	TEST(ImportCompositesTest, SkipsInvalidComposites)
 	{
-		// CSV file path
-		// TODO: Fix to support non-hardcoded file path
-		std::string filePath = "C:\\repos\\Kriging\\Tests\\Data\\ExComposites10BadData.csv";
+		// Get CSV file path
+		std::string filePath = TestHelpers::GetTestDataFilePath("ExComposites10BadData.csv");
 
 		// Create block extents for kriging
-		CoordinateExtents modelExtents;
-		InitCoordExtents(modelExtents);
+		CoordinateExtents modelExtents = InitCoordExtents();
 
 		// Search radius for kriging
 		double searchRadius = 100;

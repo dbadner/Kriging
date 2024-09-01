@@ -99,6 +99,7 @@
     <ClCompile Include="BlockTests.cpp" />
     <ClCompile Include="CompositeTests.cpp" />
     <ClCompile Include="KrigingEngineTests.cpp" />
+    <ClCompile Include="TestHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KrigingLib\KrigingLib.vcxproj">
@@ -107,6 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestHelpers.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,6 +10,7 @@
 #include "gtest/gtest.h"
 #include "../KrigingLib/KrigingEngine.hpp"
 #include "../KrigingLib/KrigingParameters.hpp"
+#include "TestHelpers.hpp"
 
 namespace KrigingEngineTests
 {
@@ -117,28 +118,6 @@ namespace KrigingEngineTests
 			mParameters.Structure = VariogramParameters::StructureType::Spherical;
 		}
 	};
-
-	/**
-	 * @brief Helper function to dump composites to CSV file
-	 */
-	static void SaveCompositesToCSV(Composites& composites, std::string fileName)
-	{
-		std::ofstream file(fileName);
-
-		// Write the header
-		file << "X,Y,Z,Grade\n";
-
-		// Write the data
-		for (size_t i = 0; i < composites.X.size(); ++i) {
-			file << std::fixed << std::setprecision(3)
-				<< composites.X[i] << ','
-				<< composites.Y[i] << ','
-				<< composites.Z[i] << ','
-				<< composites.Grade[i] << '\n';
-		}
-
-		file.close();
-	}
 
 	TEST_F(KrigingTests, OrdinaryKrigingConstGradeTest)
 	{
@@ -270,7 +249,7 @@ namespace KrigingEngineTests
 
 		if (writeCompositesToFile)
 		{
-			SaveCompositesToCSV(composites, "ExComposites.csv");
+			TestHelpers::SaveCompositesToCSV(composites, "ExComposites.csv");
 		}
 
 		// Start measuring time
