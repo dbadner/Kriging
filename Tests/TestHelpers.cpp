@@ -9,7 +9,6 @@ std::string TestHelpers::GetTestDataFilePath(const std::string fileName)
 
 	path = path.parent_path().parent_path();
 
-	path /= "Tests";
 	path /= "Data";
 
 	return (path / fileName).string();

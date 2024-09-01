@@ -211,6 +211,7 @@ namespace KrigingEngineTests
 		modelInfo.BlockCountI = 100;
 		modelInfo.BlockCountJ = 100;
 		modelInfo.BlockCountK = 100;
+		modelInfo.BlockCoordExtents = modelExtents;
 
 		VariogramParameters varParameters;
 		varParameters.Range = 50.0;
