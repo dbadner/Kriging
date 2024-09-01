@@ -104,6 +104,13 @@ private:
 	 */
 	static bool IsRelevantComposite(const double x, const double y, const double z, const double grade, const CoordinateExtents& extents);
 
+	/**
+	 * @brief Final data checks, then initialize Kd Tree. 
+	 * 
+	 * Note: Should only be called from the constructor.
+	 */
+	void FinishInitialization();
+
 	// Build the KdTree index; should only be called by the constructor
 	void BuildKdTree();
 };

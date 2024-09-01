@@ -183,4 +183,19 @@ namespace CompositeTests
 		// Test number of imported composites is correct
 		EXPECT_EQ(7, composites.X.size());
 	}
+
+	TEST(ImportZeroCompositesTest, ThrowsInvalidException)
+	{
+		// Get CSV file path
+		std::string filePath = TestHelpers::GetTestDataFilePath("ExComposites1Bad.csv");
+
+		// Create block extents for kriging
+		CoordinateExtents modelExtents = InitCoordExtents();
+
+		// Search radius for kriging
+		double searchRadius = 100;
+
+		// Confirm an exception is thrown; at least one valid composite is required
+		EXPECT_THROW(Composites composites(filePath, modelExtents, searchRadius), std::invalid_argument);
+	}
 }

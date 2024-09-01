@@ -3,19 +3,13 @@
 Composites::Composites(const std::string csvFilePath, const CoordinateExtents blockExtents, const double maxSearchRadius)
 {
 	ReadCompositesFromCSV(csvFilePath, blockExtents, maxSearchRadius);
-	BuildKdTree();
+	FinishInitialization();
 }
 
 Composites::Composites(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::vector<double>& grades)
 	: X(x), Y(y), Z(z), Grade(grades)
 {
-	auto n = x.size();
-	if (n != y.size() || n != z.size())
-	{
-		throw std::runtime_error("X,Y,Z vectors must be the same size.");
-	}
-
-	BuildKdTree();
+	FinishInitialization();
 }
 
 Composites::~Composites()
@@ -202,7 +196,10 @@ void Composites::ReadComposites(std::ifstream& file, std::unordered_map<std::str
 		}
 	}
 
-	std::cout << "Number of composites imported: " << X.size() << '\n';
+	size_t numComposite = X.size();
+
+	// Summary output
+	std::cout << "Number of composites imported: " << numComposite << '\n';
 	std::cout << "Number of rows skipped due to invalid data: " << invalidRows << '\n';
 	std::cout << "Number of rows skipped due to irrelevant data beyond interpolation extents: " << irrelevantRows << '\n';
 }
@@ -224,6 +221,24 @@ bool Composites::IsRelevantComposite(const double x, const double y, const doubl
 	}
 
 	return true;
+}
+
+void Composites::FinishInitialization()
+{
+	size_t numComposite = X.size();
+
+	// Final checks
+	if (Y.size() != numComposite || Z.size() != numComposite || Grade.size() != numComposite)
+	{
+		throw std::invalid_argument("X,Y,Z,Grade vectors must be the same size.");
+	}
+	if (numComposite < 1)
+	{
+		throw std::invalid_argument("At least one valid composite is required.");
+	}
+
+	// Build KdTree
+	BuildKdTree();
 }
 
 void Composites::BuildKdTree()
