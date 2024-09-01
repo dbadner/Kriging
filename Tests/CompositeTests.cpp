@@ -143,22 +143,19 @@ namespace CompositeTests
 		std::string filePath = "C:\\repos\\Kriging\\Tests\\Data\\ExComposites10.csv";
 
 		// Create block extents for kriging
-		BlockModelInfo modelInfo;
-		modelInfo.MinX = 20;
-		modelInfo.MinY = 20;
-		modelInfo.MinZ = 15;
-		modelInfo.MaxX = 100;
-		modelInfo.MaxY = 100;
-		modelInfo.MaxZ = 50;
-		modelInfo.BlockCountI = 16;
-		modelInfo.BlockCountJ = 16;
-		modelInfo.BlockCountK = 14;
+		CoordinateExtents modelExtents;
+		modelExtents.MinX = 20;
+		modelExtents.MinY = 20;
+		modelExtents.MinZ = 15;
+		modelExtents.MaxX = 100;
+		modelExtents.MaxY = 100;
+		modelExtents.MaxZ = 50;
 
 		// Search radius for kriging
 		double searchRadius = 100;
 
 		// Initialize and import composites
-		Composites composites(filePath, modelInfo, searchRadius);
+		Composites composites(filePath, modelExtents, searchRadius);
 
 		// Test number of imported composites is correct
 		EXPECT_EQ(10, composites.X.size());
@@ -171,22 +168,19 @@ namespace CompositeTests
 		std::string filePath = "C:\\repos\\Kriging\\Tests\\Data\\ExComposites10BadData.csv";
 
 		// Create block extents for kriging
-		BlockModelInfo modelInfo;
-		modelInfo.MinX = 20;
-		modelInfo.MinY = 20;
-		modelInfo.MinZ = 15;
-		modelInfo.MaxX = 100;
-		modelInfo.MaxY = 100;
-		modelInfo.MaxZ = 50;
-		modelInfo.BlockCountI = 16;
-		modelInfo.BlockCountJ = 16;
-		modelInfo.BlockCountK = 14;
+		CoordinateExtents modelExtents;
+		modelExtents.MinX = 20;
+		modelExtents.MinY = 20;
+		modelExtents.MinZ = 15;
+		modelExtents.MaxX = 100;
+		modelExtents.MaxY = 100;
+		modelExtents.MaxZ = 50;
 
 		// Search radius for kriging
 		double searchRadius = 100;
 
 		// Initialize and import composites
-		Composites composites(filePath, modelInfo, searchRadius);
+		Composites composites(filePath, modelExtents, searchRadius);
 
 		// Test number of imported composites is correct
 		EXPECT_EQ(7, composites.X.size());

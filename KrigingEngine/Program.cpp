@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
    // Read in composites
    // TODO; TBC; dummy placeholder
    std::string csvFilePath = {};
-   Composites composites(csvFilePath, parameters.BlockModelInfo, parameters.MaxRadius);
+   Composites composites(csvFilePath, parameters.BlockModelInfo.BlockCoordExtents, parameters.MaxRadius);
 
    // Perform kriging
    KrigingEngine::RunKriging(blocks, parameters, composites);

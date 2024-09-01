@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CoordinateExtents.hpp"
+
 /**
  * @brief Parameters to define the variogram fit
  *
@@ -7,17 +9,17 @@
  */
 struct VariogramParameters
 {
-   enum StructureType
-   {
-      Spherical = 0,
-      Exponential = 1,
-      Gaussian = 2
-   };
+	enum StructureType
+	{
+		Spherical = 0,
+		Exponential = 1,
+		Gaussian = 2
+	};
 
-   double Nugget;
-   double Sill;
-   double Range;
-   StructureType Structure;
+	double Nugget;
+	double Sill;
+	double Range;
+	StructureType Structure;
 };
 
 /**
@@ -27,9 +29,8 @@ struct VariogramParameters
  */
 struct BlockModelInfo
 {
-   double MinX, MinY, MinZ;
-   double MaxX, MaxY, MaxZ;
-   int BlockCountI, BlockCountJ, BlockCountK;
+	CoordinateExtents BlockCoordExtents;
+	int BlockCountI, BlockCountJ, BlockCountK;
 };
 
 /**
@@ -39,17 +40,17 @@ struct BlockModelInfo
  */
 struct KrigingParameters
 {
-   enum KrigingType
-   {
-      Ordinary = 0
-      // TODO: Support other types of kriging
-   };
+	enum KrigingType
+	{
+		Ordinary = 0
+		// TODO: Support other types of kriging
+	};
 
-   KrigingType Type; // Type of kriging, not used yet
-   int Domain; // Domain to interpolate, not used yet
-   int MinNumComposites; // Minimum number of composites per block
-   int MaxNumComposites; // Maximum number of composites per block
-   double MaxRadius; // Maximum isotropic search radius
-   VariogramParameters VariogramParameters; // Variogram parameters
-   BlockModelInfo BlockModelInfo; // Block model definition
+	KrigingType Type; // Type of kriging, not used yet
+	int Domain; // Domain to interpolate, not used yet
+	int MinNumComposites; // Minimum number of composites per block
+	int MaxNumComposites; // Maximum number of composites per block
+	double MaxRadius; // Maximum isotropic search radius
+	VariogramParameters VariogramParameters; // Variogram parameters
+	BlockModelInfo BlockModelInfo; // Block model definition
 };

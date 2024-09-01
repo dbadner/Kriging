@@ -221,13 +221,15 @@ namespace KrigingEngineTests
 		int numComposites = 1000000;
 		bool writeCompositesToFile = false;
 
+		CoordinateExtents modelExtents;
+		modelExtents.MinX = 0;
+		modelExtents.MinY = 0;
+		modelExtents.MinZ = 0;
+		modelExtents.MaxX = 100;
+		modelExtents.MaxY = 100;
+		modelExtents.MaxZ = 100;
+
 		BlockModelInfo modelInfo;
-		modelInfo.MinX = 0;
-		modelInfo.MinY = 0;
-		modelInfo.MinZ = 0;
-		modelInfo.MaxX = 100;
-		modelInfo.MaxY = 100;
-		modelInfo.MaxZ = 100;
 		modelInfo.BlockCountI = 100;
 		modelInfo.BlockCountJ = 100;
 		modelInfo.BlockCountK = 100;

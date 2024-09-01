@@ -11,14 +11,17 @@
 namespace BlockTests
 {
    TEST(TestCreateBlocks, CreatesCorrectNumberOfComposites)
-   {
+   {  
+      CoordinateExtents modelExtents;
+      modelExtents.MinX = 20;
+      modelExtents.MinY = 20;
+      modelExtents.MinZ = 15;
+      modelExtents.MaxX = 100;
+      modelExtents.MaxY = 100;
+      modelExtents.MaxZ = 50;
+
       BlockModelInfo modelInfo;
-      modelInfo.MinX = 20;
-      modelInfo.MinY = 20;
-      modelInfo.MinZ = 15;
-      modelInfo.MaxX = 100;
-      modelInfo.MaxY = 100;
-      modelInfo.MaxZ = 50;
+      modelInfo.BlockCoordExtents = modelExtents;
       modelInfo.BlockCountI = 16;
       modelInfo.BlockCountJ = 16;
       modelInfo.BlockCountK = 14;

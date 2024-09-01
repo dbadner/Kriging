@@ -38,7 +38,7 @@ public:
 	 * Required columns: 'X', 'Y', 'Z', 'Grade'.
 	 * Each CSV row must have the same number of columns.
 	 */
-	Composites(const std::string csvFilePath, const BlockModelInfo blockExtents, const double maxSearchRadius);
+	Composites(const std::string csvFilePath, const CoordinateExtents blockExtents, const double maxSearchRadius);
 
 	/**
 	 * @brief Initializes composites by copying input vectors of x,y,z coordinates, and grades
@@ -90,10 +90,10 @@ private:
 	 * Function excludes data beyond the block extents plus search radius
 	 * 
 	 * @param filePath path of the CSV file
-	 * @param blockExtents extents of the blocks to be krigged
+	 * @param blockExtents X,Y,Z coordinate extents of the blocks to be krigged
 	 * @param maxSearchRadius maximum search radius for the krigging
 	 */
-	void ReadCompositesFromCSV(const std::string& filePath, const BlockModelInfo& blockExtents, const double maxSearchRadius);
+	void ReadCompositesFromCSV(const std::string& filePath, const CoordinateExtents& blockExtents, const double maxSearchRadius);
 
 	/**
 	 * @brief Read in composite data from CSV.

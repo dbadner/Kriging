@@ -1,6 +1,6 @@
 #include "Composites.hpp"
 
-Composites::Composites(const std::string csvFilePath, const BlockModelInfo blockExtents, const double maxSearchRadius)
+Composites::Composites(const std::string csvFilePath, const CoordinateExtents blockExtents, const double maxSearchRadius)
 {
 	ReadCompositesFromCSV(csvFilePath, blockExtents, maxSearchRadius);
 	BuildKdTree();
@@ -72,7 +72,7 @@ inline double Composites::kdtree_get_pt(const size_t idx, const int dim) const
 	return Z[idx];
 }
 
-void Composites::ReadCompositesFromCSV(const std::string& filePath, const BlockModelInfo& blockExtents, const double maxSearchRadius)
+void Composites::ReadCompositesFromCSV(const std::string& filePath, const CoordinateExtents& blockExtents, const double maxSearchRadius)
 {
 	std::ifstream file(filePath);
 	if (!file)
@@ -114,6 +114,7 @@ void Composites::ReadCompositesFromCSV(const std::string& filePath, const BlockM
 
 	// Calculate extents within which to import
 	CoordinateExtents extents;
+	CoordinateExtents blockCoordExtents;
 	extents.MaxX = blockExtents.MaxX + maxSearchRadius;
 	extents.MinX = blockExtents.MinX - maxSearchRadius;
 	extents.MaxY = blockExtents.MaxY + maxSearchRadius;
