@@ -136,6 +136,16 @@ namespace CompositeTests
 		ASSERT_LT(duration1, duration2);
 	}
 
+	static void InitCoordExtents(CoordinateExtents& modelExtents)
+	{
+		modelExtents.MinX = 20;
+		modelExtents.MinY = 20;
+		modelExtents.MinZ = 15;
+		modelExtents.MaxX = 100;
+		modelExtents.MaxY = 100;
+		modelExtents.MaxZ = 50;
+	}
+
 	TEST(ImportCompositesTest, ImportsCorerctNumberOfComposites)
 	{
 		// CSV file path
@@ -144,12 +154,7 @@ namespace CompositeTests
 
 		// Create block extents for kriging
 		CoordinateExtents modelExtents;
-		modelExtents.MinX = 20;
-		modelExtents.MinY = 20;
-		modelExtents.MinZ = 15;
-		modelExtents.MaxX = 100;
-		modelExtents.MaxY = 100;
-		modelExtents.MaxZ = 50;
+		InitCoordExtents(modelExtents);
 
 		// Search radius for kriging
 		double searchRadius = 100;
@@ -169,12 +174,7 @@ namespace CompositeTests
 
 		// Create block extents for kriging
 		CoordinateExtents modelExtents;
-		modelExtents.MinX = 20;
-		modelExtents.MinY = 20;
-		modelExtents.MinZ = 15;
-		modelExtents.MaxX = 100;
-		modelExtents.MaxY = 100;
-		modelExtents.MaxZ = 50;
+		InitCoordExtents(modelExtents);
 
 		// Search radius for kriging
 		double searchRadius = 100;

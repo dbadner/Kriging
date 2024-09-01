@@ -92,23 +92,29 @@ void Composites::ReadCompositesFromCSV(const std::string& filePath, const Coordi
 	std::istringstream headerStream(line);
 	std::string header;
 	size_t columnIndex = 0;
+
+	// Iterate over the header columns
 	while (std::getline(headerStream, header, ','))
 	{
 		// Trim whitespace and convert to lowercase for consistency
 		header.erase(header.find_last_not_of(" \n\r\t") + 1);
 		std::transform(header.begin(), header.end(), header.begin(), tolower);
-		columnIndices[header] = columnIndex++;
+
+		// Check if the column is one of the required columns
+		if (std::find(mRequiredColumns.begin(), mRequiredColumns.end(), header) != mRequiredColumns.end())
+		{
+			columnIndices[header] = columnIndex;
+		}
+		columnIndex++;
 	}
 
-	// Check required columns
+	// Ensure all required columns are present
 	for (const auto& col : mRequiredColumns)
 	{
 		if (columnIndices.find(col) == columnIndices.end())
 		{
 			file.close();
-			std::ostringstream oss;
-			oss << "Missing required column: " << col;
-			throw std::runtime_error(oss.str());
+			throw std::runtime_error("Missing required column: " + col);
 		}
 	}
 
@@ -133,6 +139,10 @@ void Composites::ReadComposites(std::ifstream& file, std::unordered_map<std::str
 	std::string line;
 	size_t invalidRows = 0;
 	size_t irrelevantRows = 0;
+	size_t xCol = columnIndices[mXColName];
+	size_t yCol = columnIndices[mYColName];
+	size_t zCol = columnIndices[mZColName];
+	size_t gradeCol = columnIndices[mGradeColName];
 	double x, y, z, grade;
 	while (std::getline(file, line))
 	{
@@ -156,10 +166,10 @@ void Composites::ReadComposites(std::ifstream& file, std::unordered_map<std::str
 		// Extract values based on column indices
 		try
 		{
-			x = std::stod(cells[columnIndices[mXColName]]);
-			y = std::stod(cells[columnIndices[mYColName]]);
-			z = std::stod(cells[columnIndices[mZColName]]);
-			grade = std::stod(cells[columnIndices[mGradeColName]]);
+			x = std::stod(cells[xCol]);
+			y = std::stod(cells[yCol]);
+			z = std::stod(cells[zCol]);
+			grade = std::stod(cells[gradeCol]);
 
 			// Assume grade < 0 is invalid; could be user input in future
 			if (grade < 0)

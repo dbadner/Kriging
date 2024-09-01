@@ -36,7 +36,6 @@ public:
 	 * 
 	 * First row in csv must contain column headers.
 	 * Required columns: 'X', 'Y', 'Z', 'Grade'.
-	 * Each CSV row must have the same number of columns.
 	 */
 	Composites(const std::string csvFilePath, const CoordinateExtents blockExtents, const double maxSearchRadius);
 
