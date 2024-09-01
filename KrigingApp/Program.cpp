@@ -1,15 +1,17 @@
 #pragma once
 
-#include "Blocks.hpp"
-#include "Composites.hpp"
-#include "KrigingParameters.hpp"
-#include "KrigingEngine.hpp"
+#include "../KrigingLib/Blocks.hpp"
+#include "../KrigingLib/Composites.hpp"
+#include "../KrigingLib/KrigingParameters.hpp"
+#include "../KrigingLib/KrigingEngine.hpp"
 
 /**
  * @brief Entry point for the console application. 
  */
 int main(int argc, char* argv[])
 {
+	std::cout << "Launched program." << '\n';
+
    // Read in kriging parameters from file
    // TODO: file input TBC; dummy placeholder
    KrigingParameters parameters;

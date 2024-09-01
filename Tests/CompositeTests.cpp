@@ -7,8 +7,7 @@
 
 //TODO: Update solution structure so cpp references are not needed in test project
 #include "gtest/gtest.h"
-#include "../KrigingEngine/Composites.hpp"
-#include "../KrigingEngine/Composites.cpp"
+#include "../KrigingLib/Composites.hpp"
 
 /**
  * @brief Unit tests for composite class

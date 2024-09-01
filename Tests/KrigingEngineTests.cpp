@@ -8,9 +8,8 @@
 #include <iomanip>
 
 #include "gtest/gtest.h"
-#include "../KrigingEngine/KrigingEngine.hpp"
-#include "../KrigingEngine/KrigingEngine.cpp"
-#include "../KrigingEngine/KrigingParameters.hpp"
+#include "../KrigingLib/KrigingEngine.hpp"
+#include "../KrigingLib/KrigingParameters.hpp"
 
 namespace KrigingEngineTests
 {

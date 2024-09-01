@@ -1,9 +1,8 @@
 #pragma once
 
 #include "gtest/gtest.h"
-#include "../KrigingEngine/Blocks.hpp"
-#include "../KrigingEngine/Blocks.cpp"
-#include "../KrigingEngine/KrigingParameters.hpp"
+#include "../KrigingLib/Blocks.hpp"
+#include "../KrigingLib/KrigingParameters.hpp"
 
 /**
  * @brief Unit tests for blocks class
