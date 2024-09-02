@@ -269,8 +269,8 @@ namespace KrigingEngineTests
 		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
 		// Print out the time taken
-		std::cout << "Number of blocks: " << blocks.X.size() << std::endl;
-		std::cout << "Number of composites: " << composites.X.size() << std::endl;
+		std::cout << "Number of blocks: " << blocks.GetSize() << std::endl;
+		std::cout << "Number of composites: " << composites.GetSize() << std::endl;
 		std::cout << "Time taken: " << duration << " milliseconds" << std::endl;
 
 		// Print out the first 5 block I, J, K, and grade values

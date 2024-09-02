@@ -28,9 +28,6 @@ struct NearestCompositesResult
 class Composites
 {
 public:
-	std::vector<double> X, Y, Z; // Composite/sample center locations; cannot be modified once class is initialized
-	std::vector<double> Grade; // Composite grades
-
 	/**
 	 * @brief Reads in composites from csv file, filtering based on block extents and search radius.
 	 * 
@@ -52,6 +49,31 @@ public:
 	~Composites();
 
 	/**
+	 * @brief Get X value at composite index i
+	 */
+	const double& GetX(size_t& i) const { return X[i]; }
+
+	/**
+	 * @brief Get Y value at composite index i
+	 */
+	const double& GetY(size_t& i) const { return Y[i]; }
+
+	/**
+	 * @brief Get Z value at composite index i
+	 */
+	const double& GetZ(size_t& i) const { return Z[i]; }
+
+	/**
+	 * @brief Get grade value at composite index i
+	 */
+	const double& GetGrade(size_t& i) const { return Grade[i]; }
+
+	/**
+	 * @brief Get number of composites
+	 */
+	const size_t& GetSize() const { return X.size(); }
+
+	/**
 	 * @brief Finds the nearest n composites to the given coordinates and a maximum spherical search distance.
 	 *
 	 * @return Nearest composite result, comprising vectors of composite indices in order of increasing distance, and corresponding distances.
@@ -71,6 +93,9 @@ public:
 	bool kdtree_get_bbox(BBOX&) const { return false; }
 
 private:
+	std::vector<double> X, Y, Z; // Composite/sample center locations; should not be modified after class initialization
+	std::vector<double> Grade; // Composite grades; should not be modified after class initialization
+
 	// Create a KD-tree of composite data
 	using KDTree = nanoflann::KDTreeSingleIndexAdaptor<nanoflann::L2_Simple_Adaptor<double, Composites>, Composites, 3>;
 	KDTree* mKdTree;

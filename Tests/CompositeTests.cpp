@@ -21,9 +21,9 @@ namespace CompositeTests
 		int numComposites)
 	{
 		std::vector<double> nearestComposites;
-		for (int j = 0; j < composites.X.size(); j++)
+		for (size_t j = 0; j < composites.GetSize(); j++)
 		{
-			double distanceSq = pow(x - composites.X[j], 2) + pow(y - composites.Y[j], 2) + pow(z - composites.Z[j], 2);
+			double distanceSq = pow(x - composites.GetX(j), 2) + pow(y - composites.GetY(j), 2) + pow(z - composites.GetZ(j), 2);
 			nearestComposites.push_back(distanceSq);
 		}
 		std::sort(nearestComposites.begin(), nearestComposites.end());
@@ -163,7 +163,7 @@ namespace CompositeTests
 		Composites composites(filePath, modelExtents, searchRadius);
 
 		// Test number of imported composites is correct
-		EXPECT_EQ(10, composites.X.size());
+		EXPECT_EQ(10, composites.GetSize());
 	}
 
 	TEST(ImportCompositesTest, SkipsInvalidComposites)
@@ -181,7 +181,7 @@ namespace CompositeTests
 		Composites composites(filePath, modelExtents, searchRadius);
 
 		// Test number of imported composites is correct
-		EXPECT_EQ(7, composites.X.size());
+		EXPECT_EQ(7, composites.GetSize());
 	}
 
 	TEST(ImportZeroCompositesTest, ThrowsInvalidException)

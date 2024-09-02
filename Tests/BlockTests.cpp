@@ -30,15 +30,14 @@ namespace BlockTests
       Blocks blocks(modelInfo);
 
       // Check that length of vectors is correct
-      EXPECT_EQ(expectedBlocks, blocks.X.size());
-      EXPECT_EQ(expectedBlocks, blocks.Y.size());
-      EXPECT_EQ(expectedBlocks, blocks.Z.size());
+      EXPECT_EQ(expectedBlocks, blocks.GetSize());
 
       // Spot check first centroid
       double maxError = 0.0001;
-      EXPECT_NEAR(22.5, blocks.X[0], maxError);
-      EXPECT_NEAR(22.5, blocks.Y[0], maxError);
-      EXPECT_NEAR(16.25, blocks.Z[0], maxError);
+      size_t index = 0;
+      EXPECT_NEAR(22.5, blocks.GetX(index), maxError);
+      EXPECT_NEAR(22.5, blocks.GetY(index), maxError);
+      EXPECT_NEAR(16.25, blocks.GetZ(index), maxError);
    }
 }
 

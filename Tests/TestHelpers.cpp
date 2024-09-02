@@ -25,12 +25,12 @@ void TestHelpers::SaveCompositesToCSV(Composites& composites, std::string fileNa
 	file << "X,Y,Z,Grade\n";
 
 	// Write the data
-	for (size_t i = 0; i < composites.X.size(); ++i) {
+	for (size_t i = 0; i < composites.GetSize(); ++i) {
 		file << std::fixed << std::setprecision(3)
-			<< composites.X[i] << ','
-			<< composites.Y[i] << ','
-			<< composites.Z[i] << ','
-			<< composites.Grade[i] << '\n';
+			<< composites.GetX(i) << ','
+			<< composites.GetY(i) << ','
+			<< composites.GetZ(i) << ','
+			<< composites.GetGrade(i) << '\n';
 	}
 
 	file.close();

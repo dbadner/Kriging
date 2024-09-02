@@ -99,10 +99,10 @@ double KrigingEngine::KrigeOneBlock(const double blockX, const double blockY, co
 
    for (size_t index : nearestComposites.Indices)
    {
-      subsetX.push_back(composites.X[index]);
-      subsetY.push_back(composites.Y[index]);
-      subsetZ.push_back(composites.Z[index]);
-      subsetGrade.push_back(composites.Grade[index]);
+      subsetX.push_back(composites.GetX(index));
+      subsetY.push_back(composites.GetY(index));
+      subsetZ.push_back(composites.GetZ(index));
+      subsetGrade.push_back(composites.GetGrade(index));
    }
 
    return OrdinaryKrigingPoint(blockX, blockY, blockZ,
@@ -111,12 +111,7 @@ double KrigingEngine::KrigeOneBlock(const double blockX, const double blockY, co
 
 void KrigingEngine::RunKriging(Blocks& blocks, const KrigingParameters& parameters, const Composites& composites)
 {
-   // TODO: Temporary check, move this to validation class
-   if (blocks.X.empty())
-   {
-      return;
-   }
-   const size_t numBlocks = blocks.X.size();
+   const size_t numBlocks = blocks.GetSize();
 
    // Process blocks in batches
    size_t batchSize = GetThreadBatchSize(numBlocks);
@@ -127,7 +122,7 @@ void KrigingEngine::RunKriging(Blocks& blocks, const KrigingParameters& paramete
          size_t end = std::min(i + batchSize, numBlocks);
          for (size_t j = i; j < end; ++j)
          {
-            blocks.Grade[j] = KrigeOneBlock(blocks.X[j], blocks.Y[j], blocks.Z[j], parameters, composites);
+            blocks.Grade[j] = KrigeOneBlock(blocks.GetX(j), blocks.GetY(j), blocks.GetZ(j), parameters, composites);
          }
          }));
    }
