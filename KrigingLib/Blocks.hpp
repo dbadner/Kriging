@@ -15,6 +15,9 @@ public:
 
 	/**
 	 * @brief Initializes block locations based on input model information.
+	 * 
+	 * NOTE: Assumes data have been previously validated. 
+     * Refer to KrigingParameters class for validation.
 	 */
 	Blocks(const BlockModelInfo& modelInfo);
 

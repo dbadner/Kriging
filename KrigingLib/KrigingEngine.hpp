@@ -15,6 +15,9 @@
 * @brief Class containing variogram and kriging calculation methods.
 *
 * Reference for equations: Journel & Huijbregts 1978. Mining Geostatistics. 
+* 
+* NOTE: Methods in the KrigingEngine class assume data have been previously validated. 
+* Refer to KrigingParameters and Composites classes for validation.
 */
 class KrigingEngine
 {
@@ -65,6 +68,7 @@ public:
    /**
     * @brief Runs kriging for all provided blocks using parallelization.
     *
+    * 
     * @param blocks Ref class containing list of block information.
     * @param parameters Ref class containing parameters for kriging.
     * @param composites Ref class containing composite information.

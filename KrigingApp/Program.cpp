@@ -6,35 +6,25 @@
 #include "../KrigingLib/KrigingEngine.hpp"
 
 /**
- * @brief Entry point for the console application. 
+ * @brief Entry point for the console application.
  */
 int main(int argc, char* argv[])
 {
-	std::cout << "Launched program." << '\n';
+	// Read in kriging parameters from file and validate
+	KrigingParameters parameters;
+	parameters.SerializeParameters(argv[0]);
 
-   // Read in kriging parameters from file
-   // TODO: file input TBC; dummy placeholder
-   KrigingParameters parameters;
+	// Create blocks based on input parameters
+	Blocks blocks(parameters.BlockParameters);
 
-   // Validate input parameters
-   // TODO: Add validation
+	// Read in composites filtered to interpolation area and validate
+	Composites composites(argv[1], parameters.BlockParameters.BlockCoordExtents, parameters.MaxRadius);
 
-   // Create blocks based on input range
-   Blocks blocks(parameters.BlockModelInfo);
+	// Perform kriging
+	KrigingEngine::RunKriging(blocks, parameters, composites);
 
-   // Read in composites
-   // TODO; TBC; dummy placeholder
-   std::string csvFilePath = {};
-   Composites composites(csvFilePath, parameters.BlockModelInfo.BlockCoordExtents, parameters.MaxRadius);
+	// Write blocks to file
+	// TODO: TBC
 
-   // Perform kriging
-   KrigingEngine::RunKriging(blocks, parameters, composites);
-
-   // Output summary statistics
-   // TODO: calculate and output summary statistics
-
-   // Write blocks to file
-   // TODO: TBC
-
-   return 0;
+	return 0;
 }

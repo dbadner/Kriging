@@ -225,7 +225,7 @@ namespace KrigingEngineTests
 		parameters.MaxNumComposites = 10;
 		parameters.MaxRadius = 70;
 		parameters.VariogramParameters = varParameters;
-		parameters.BlockModelInfo = modelInfo;
+		parameters.BlockParameters = modelInfo;
 
 		// Randomly generate composites
 		std::random_device rd;

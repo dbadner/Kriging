@@ -19,7 +19,7 @@ Composites::~Composites()
 
 NearestCompositesResult Composites::FindNearestComposites(const double x, const double y, const double z, const int n, const double maxDist) const
 {
-	// TODO: Optimize this method and nanoflann parameters for improved performance, move reusable objects to the thread level
+	// TODO: Optimize this method and nanoflann parameters for improved performance, move reusable objects to the thread level, consider search by maxDist rather than n
 
 	double point[3] = { x, y, z };
 	double maxDistSq = maxDist * maxDist;
@@ -68,12 +68,12 @@ inline double Composites::kdtree_get_pt(const size_t idx, const int dim) const
 
 void Composites::ReadCompositesFromCSV(const std::string& filePath, const CoordinateExtents& blockExtents, const double maxSearchRadius)
 {
+	std::cout << "Reading composites from file: " << filePath << '\n';
+
 	std::ifstream file(filePath);
 	if (!file)
 	{
-		std::ostringstream oss;
-		oss << "File does not exist or cannot be opened: " << filePath;
-		throw std::runtime_error(oss.str());
+		throw std::runtime_error("File does not exist or cannot be opened: " + filePath);
 	}
 
 	std::string line;

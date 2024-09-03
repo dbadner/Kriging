@@ -74,8 +74,11 @@ public:
 	const size_t& GetSize() const { return X.size(); }
 
 	/**
-	 * @brief Finds the nearest n composites to the given coordinates and a maximum spherical search distance.
+	 * @brief Finds the nearest n composites to the given coordinates, constrained by a maximum spherical search distance.
 	 *
+	 * @param x,y,z Coordinates of point from which to search
+	 * @param n Number of composites
+	 * @maxDist Maximum search radius from the search point
 	 * @return Nearest composite result, comprising vectors of composite indices in order of increasing distance, and corresponding distances.
 	 */
 	NearestCompositesResult FindNearestComposites(const double x, const double y, const double z, const int n, const double maxDist) const;

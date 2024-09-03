@@ -115,6 +115,7 @@
     <ClCompile Include="BlockTests.cpp" />
     <ClCompile Include="CompositeTests.cpp" />
     <ClCompile Include="KrigingEngineTests.cpp" />
+    <ClCompile Include="KrigingParameterTests.cpp" />
     <ClCompile Include="TestHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>

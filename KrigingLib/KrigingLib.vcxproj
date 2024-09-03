@@ -162,6 +162,7 @@
     <ClCompile Include="Blocks.cpp" />
     <ClCompile Include="Composites.cpp" />
     <ClCompile Include="KrigingEngine.cpp" />
+    <ClCompile Include="KrigingParameters.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

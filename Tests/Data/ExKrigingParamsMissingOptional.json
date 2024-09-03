@@ -1,8 +1,5 @@
 {
-    "Type": "Ordinary",	
-    "MinNumComposites": 5,
-    "MaxNumComposites": 20,
-    "MaxRadius": 150.0,
+    "MaxRadius": 200,
     "VariogramParameters": {
 		"Nugget": 0.2,
         "Sill": 1.0,

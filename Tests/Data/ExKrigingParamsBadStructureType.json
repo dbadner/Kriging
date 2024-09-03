@@ -7,7 +7,7 @@
 		"Nugget": 0.2,
         "Sill": 1.0,
         "Range": 100.0,
-        "StructureType": "Spherical"
+        "StructureType": "BadType"
     },
     "BlockModelInfo": {
         "CoordinateExtents": {

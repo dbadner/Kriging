@@ -2,6 +2,8 @@
 
 Blocks::Blocks(const BlockModelInfo& modelInfo)
 {
+	std::cout << "Generating blocks." << '\n';
+
 	auto extents = modelInfo.BlockCoordExtents;
 
 	double deltaX = (extents.MaxX - extents.MinX) / modelInfo.BlockCountI;
@@ -33,4 +35,5 @@ Blocks::Blocks(const BlockModelInfo& modelInfo)
 			}
 		}
 	}
+	std::cout << "Number of blocks created: " << X.size() << '\n';
 }

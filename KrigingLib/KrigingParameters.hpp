@@ -1,14 +1,20 @@
 #pragma once
 
 #include "CoordinateExtents.hpp"
+#include "include\json.hpp"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <limits>
 
 /**
  * @brief Parameters to define the variogram fit
  *
  * Simplifications: Single structure, isotropic, global variogram
  */
-struct VariogramParameters
+class VariogramParameters
 {
+public:
 	enum StructureType
 	{
 		Spherical = 0,
@@ -20,6 +26,11 @@ struct VariogramParameters
 	double Sill;
 	double Range;
 	StructureType Structure;
+
+	/**
+	 * @brief Returns StructureType corresponding to input string
+	 */
+	static StructureType StringToStructureType(std::string structure);
 };
 
 /**
@@ -38,19 +49,61 @@ struct BlockModelInfo
  *
  * Simplifications: No quadrant/octant search, isotropic, one type of kriging, and much more.
  */
-struct KrigingParameters
+class KrigingParameters
 {
+public:
 	enum KrigingType
 	{
-		Ordinary = 0
+		Ordinary = 0 // Default
 		// TODO: Support other types of kriging
 	};
 
-	KrigingType Type; // Type of kriging, not used yet
-	int Domain; // Domain to interpolate, not used yet
-	int MinNumComposites; // Minimum number of composites per block
-	int MaxNumComposites; // Maximum number of composites per block
-	double MaxRadius; // Maximum isotropic search radius
+	// Optional properties
+	KrigingType Type; // Type of kriging, not used yet, default ordinary kriging
+	int MinNumComposites; // Minimum number of composites per block, default 1
+	int MaxNumComposites; // Maximum number of composites per block, default 15
+
+	//Required properties
+	double MaxRadius; // Maximum isotropic search radius, default unlimited
 	VariogramParameters VariogramParameters; // Variogram parameters
-	BlockModelInfo BlockModelInfo; // Block model definition
+	BlockModelInfo BlockParameters; // Block model definition
+
+	/**
+	 * @brief Serializes input json parameters to class fields
+	 */
+	void SerializeParameters(const std::string& filePath);
+
+private:
+	// Optional property defaults
+	const KrigingType mDefaultType = KrigingType::Ordinary;
+	const int mDefaultMinNumComposites = 1;
+	const int mDefaultMaxNumComposites = 15;
+
+	//Minimum non-zero double value for validation
+	const double mDoubleValMin = 0.00001;
+
+	/**
+	 * @brief Validate parameters stored in class fields.
+	 */
+	void ValidateParameters();
+
+	/**
+	 * @brief Validate kriging parameters stored in class fields.
+	 */
+	void ValidateKrigingParameters();
+
+	/**
+	 * @brief Validate variogram parameters stored in class fields.
+	 */
+	void ValidateVariogramParameters();
+
+	/**
+	 * @brief Validate block parameters stored in class fields.
+	 */
+	void ValidateBlockParameters();
+
+	/**
+	 * @brief Returns KrigingType corresponding to input string
+	 */
+	static KrigingType StringToKrigingType(std::string string);
 };
