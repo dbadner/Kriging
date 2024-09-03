@@ -2,7 +2,7 @@
 
 Blocks::Blocks(const BlockModelInfo& modelInfo)
 {
-	std::cout << "Generating blocks." << '\n';
+	std::cout << "Generating blocks..." << std::endl;
 
 	auto extents = modelInfo.BlockCoordExtents;
 
@@ -15,7 +15,7 @@ Blocks::Blocks(const BlockModelInfo& modelInfo)
 	X.reserve(numBlocks);
 	Y.reserve(numBlocks);
 	Z.reserve(numBlocks);
-	Grade.resize(numBlocks, NullValue); // TODO: replace this with null handling, std::optional
+	Grade.resize(numBlocks, std::nullopt); // Initialize grade with null values
 
 	for (int k = 0; k < modelInfo.BlockCountK; ++k)
 	{
@@ -35,11 +35,12 @@ Blocks::Blocks(const BlockModelInfo& modelInfo)
 			}
 		}
 	}
-	std::cout << "Number of blocks created: " << X.size() << '\n';
+	std::cout << "Number of blocks created: " << X.size() << std::endl;
 }
 
 void Blocks::WriteToCSV(const std::string& filePath) const
 {
+	std::cout << "Writing results to file..." << std::endl;
 	std::ofstream file(filePath);
 	if (!file.is_open())
 	{
@@ -49,11 +50,20 @@ void Blocks::WriteToCSV(const std::string& filePath) const
 	file << "X,Y,Z,Grade\n";
 
 	size_t numRows = GetSize();
-
+	std::string grade;
 	for (size_t i = 0; i < numRows; ++i)
 	{
-		file << X[i] << "," << Y[i] << "," << Z[i] << "," << Grade[i] << "\n";
+		if (Grade[i].has_value())
+		{
+			grade = std::to_string(Grade[i].value());
+		}
+		else
+		{
+			grade = "NULL";
+		}
+		file << X[i] << "," << Y[i] << "," << Z[i] << "," << grade << "\n";
 	}
 
 	file.close();
+	std::cout << "Finished writing. Results are in file: " << filePath << std::endl;
 }

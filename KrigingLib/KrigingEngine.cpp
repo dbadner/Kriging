@@ -1,6 +1,6 @@
 #include "KrigingEngine.hpp"
 
-double KrigingEngine::Variogram(const double h, const VariogramParameters& parameters)
+double KrigingEngine::Variogram(double h, const VariogramParameters& parameters)
 {
 	// lag distance normalized by the range
 	double ha = h / parameters.Range;
@@ -25,13 +25,13 @@ double KrigingEngine::Variogram(const double h, const VariogramParameters& param
 	//TODO: Add support for anisotropy and rotated variograms with rotation matrix
 }
 
-double KrigingEngine::Covariance(const double h, const VariogramParameters& parameters)
+double KrigingEngine::Covariance(double h, const VariogramParameters& parameters)
 {
 	double gamma_h = Variogram(h, parameters);
 	return parameters.Sill - gamma_h;
 }
 
-double KrigingEngine::OrdinaryKrigingPoint(const double x0, const double y0, const double z0,
+double KrigingEngine::OrdinaryKrigingPoint(double x0, double y0, double z0,
 	const std::vector<double>& xs, const std::vector<double>& ys, const std::vector<double>& zs,
 	const std::vector<double>& values, const VariogramParameters& parameters)
 {
@@ -74,7 +74,7 @@ double KrigingEngine::OrdinaryKrigingPoint(const double x0, const double y0, con
 	return krigedValue;
 }
 
-double KrigingEngine::KrigeOneBlock(const double blockX, const double blockY, const double blockZ,
+std::optional<double> KrigingEngine::KrigeOneBlock(double blockX, double blockY, double blockZ,
 	const KrigingParameters& parameters, const Composites& composites)
 {
 	// Find nearest composites
@@ -83,7 +83,7 @@ double KrigingEngine::KrigeOneBlock(const double blockX, const double blockY, co
 	// Skip block if not enough composites
 	if (nearestComposites.Indices.size() < parameters.MinNumComposites)
 	{
-		return NullValue;
+		return std::nullopt;
 	}
 
 	// Create subset of composites based on indices
@@ -106,7 +106,7 @@ double KrigingEngine::KrigeOneBlock(const double blockX, const double blockY, co
 
 void KrigingEngine::RunKriging(Blocks& blocks, const KrigingParameters& parameters, const Composites& composites)
 {
-	std::cout << "Running kriging." << '\n';
+	std::cout << "Running kriging..." << std::endl;
 
 	const size_t numBlocks = blocks.GetSize();
 
@@ -129,10 +129,10 @@ void KrigingEngine::RunKriging(Blocks& blocks, const KrigingParameters& paramete
 	{
 		fut.get();
 	}
-	std::cout << "Kriging completed." << '\n';
+	std::cout << "Kriging completed." << std::endl;
 }
 
-size_t KrigingEngine::GetThreadBatchSize(const size_t numBlocks)
+size_t KrigingEngine::GetThreadBatchSize(size_t numBlocks)
 {
 	size_t numThread;
 	try
@@ -155,7 +155,7 @@ size_t KrigingEngine::GetThreadBatchSize(const size_t numBlocks)
 	return (numBlocks + numThread - 1) / numThread;
 }
 
-double KrigingEngine::EuclideanDistance(const double x1, const double y1, const double z1, const double x2, const double y2, const double z2)
+double KrigingEngine::EuclideanDistance(double x1, double y1, double z1, double x2, double y2, double z2)
 {
 	return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
 }

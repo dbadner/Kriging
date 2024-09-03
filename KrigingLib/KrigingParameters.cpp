@@ -24,7 +24,7 @@ VariogramParameters::StructureType VariogramParameters::StringToStructureType(st
 
 void KrigingParameters::SerializeParameters(const std::string& filePath)
 {
-	std::cout << "Reading kriging parameters from file: " + filePath << '\n';
+	std::cout << "Reading kriging parameters from file: " + filePath << std::endl;
 
 	std::ifstream file(filePath);
 	if (!file.is_open())
@@ -102,7 +102,7 @@ void KrigingParameters::SerializeParameters(const std::string& filePath)
 	}
 
 	ValidateParameters();
-	std::cout << "Kriging parameters successfully read." << '\n';
+	std::cout << "Kriging parameters successfully read." << std::endl;
 }
 
 void KrigingParameters::ValidateParameters()
@@ -124,7 +124,7 @@ void KrigingParameters::ValidateKrigingParameters()
 	}
 	if (MaxRadius <= 0)
 	{
-		LogAndThrow<std::invalid_argument>("Maximum number of composites must be greater than zero.");
+		LogAndThrow<std::invalid_argument>("Maximum radius must be greater than zero.");
 	}
 }
 

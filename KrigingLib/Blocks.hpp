@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "KrigingParameters.hpp"
-#include "Globals.hpp"
 
 /**
  * @brief Class containing block model information.
@@ -11,7 +10,7 @@
 class Blocks
 {
 public:
-	std::vector<double> Grade; // Block grades
+	std::vector<std::optional<double>> Grade; // Block grades
 
 	/**
 	 * @brief Initializes block locations based on input model information.
@@ -24,22 +23,22 @@ public:
 	/**
 	 * @brief Get X value at composite index i
 	 */
-	const double& GetX(size_t& i) const { return X[i]; }
+	double GetX(size_t i) const { return X[i]; }
 
 	/**
 	 * @brief Get Y value at composite index i
 	 */
-	const double& GetY(size_t& i) const { return Y[i]; }
+	double GetY(size_t i) const { return Y[i]; }
 
 	/**
 	 * @brief Get Z value at composite index i
 	 */
-	const double& GetZ(size_t& i) const { return Z[i]; }
+	double GetZ(size_t i) const { return Z[i]; }
 
 	/**
 	 * @brief Get number of composites
 	 */
-	const size_t& GetSize() const { return X.size(); }
+	size_t GetSize() const { return X.size(); }
 
 	/**
 	 * @brief Writes blocks to CSV at the provided filepath

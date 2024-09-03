@@ -1,6 +1,6 @@
 #include "Composites.hpp"
 
-Composites::Composites(const std::string csvFilePath, const CoordinateExtents blockExtents, const double maxSearchRadius)
+Composites::Composites(const std::string& csvFilePath, const CoordinateExtents& blockExtents, double maxSearchRadius)
 {
 	ReadCompositesFromCSV(csvFilePath, blockExtents, maxSearchRadius);
 	FinishInitialization();
@@ -17,7 +17,7 @@ Composites::~Composites()
 	delete mKdTree;
 }
 
-NearestCompositesResult Composites::FindNearestComposites(const double x, const double y, const double z, const int n, const double maxDist) const
+NearestCompositesResult Composites::FindNearestComposites(double x, double y, double z, int n, double maxDist) const
 {
 	// TODO: Optimize this method and nanoflann parameters for improved performance, move reusable objects to the thread level, consider search by maxDist rather than n
 
@@ -51,7 +51,7 @@ inline size_t Composites::kdtree_get_point_count() const
 	return X.size();
 }
 
-inline double Composites::kdtree_distance(const double* p1, const size_t idxp2) const
+inline double Composites::kdtree_distance(const double* p1, size_t idxp2) const
 {
 	double d0 = p1[0] - X[idxp2];
 	double d1 = p1[1] - Y[idxp2];
@@ -59,16 +59,16 @@ inline double Composites::kdtree_distance(const double* p1, const size_t idxp2) 
 	return d0 * d0 + d1 * d1 + d2 * d2;
 }
 
-inline double Composites::kdtree_get_pt(const size_t idx, const int dim) const
+inline double Composites::kdtree_get_pt(size_t idx, int dim) const
 {
 	if (dim == 0) return X[idx];
 	if (dim == 1) return Y[idx];
 	return Z[idx];
 }
 
-void Composites::ReadCompositesFromCSV(const std::string& filePath, const CoordinateExtents& blockExtents, const double maxSearchRadius)
+void Composites::ReadCompositesFromCSV(const std::string& filePath, const CoordinateExtents& blockExtents, double maxSearchRadius)
 {
-	std::cout << "Reading composites from file: " << filePath << '\n';
+	std::cout << "Reading composites from file: " << filePath << std::endl;
 
 	std::ifstream file(filePath);
 	if (!file)
@@ -199,12 +199,12 @@ void Composites::ReadComposites(std::ifstream& file, std::unordered_map<std::str
 	size_t numComposite = X.size();
 
 	// Summary output
-	std::cout << "Number of composites imported: " << numComposite << '\n';
-	std::cout << "Number of rows skipped due to invalid data: " << invalidRows << '\n';
-	std::cout << "Number of rows skipped due to irrelevant data beyond interpolation extents: " << irrelevantRows << '\n';
+	std::cout << "Number of composites imported: " << numComposite << std::endl;
+	std::cout << "Number of rows skipped due to invalid data: " << invalidRows << std::endl;
+	std::cout << "Number of rows skipped due to irrelevant data beyond interpolation extents: " << irrelevantRows << std::endl;
 }
 
-bool Composites::IsRelevantComposite(const double x, const double y, const double z, const double grade, const CoordinateExtents& extents)
+bool Composites::IsRelevantComposite(double x, double y, double z, double grade, const CoordinateExtents& extents)
 {
 	// Don't import composite if beyond relevant interpolation limits
 	if (x < extents.MinX || x > extents.MaxX)

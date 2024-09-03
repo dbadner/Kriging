@@ -8,7 +8,6 @@
 #include "include/Eigen/Dense"
 #include "Blocks.hpp"
 #include "Composites.hpp"
-#include "Globals.hpp"
 #include "KrigingParameters.hpp"
 
 /**
@@ -30,7 +29,7 @@ public:
     * @param parameters Variogram parameters.
     * @return Variogram value.
     */
-   static double Variogram(const double h, const VariogramParameters& parameters);
+   static double Variogram(double h, const VariogramParameters& parameters);
 
    /**
     * @brief Calculates the covariance for a given pair of points.
@@ -39,7 +38,7 @@ public:
     * @param parameters Variogram parameters.
     * @return Covariance value.
     */
-   static double Covariance(const double h, const VariogramParameters& parameters);
+   static double Covariance(double h, const VariogramParameters& parameters);
 
    /**
     * @brief Performs ordinary kriging for a point p0 given nearest samples.
@@ -50,7 +49,7 @@ public:
     * @param parameters Variogram parameters.
     * @return Krigged value at point p0.
     */
-   static double OrdinaryKrigingPoint(const double x0, const double y0, const double z0,
+   static double OrdinaryKrigingPoint(double x0, double y0, double z0,
       const std::vector<double>& xs, const std::vector<double>& ys, const std::vector<double>& zs,
       const std::vector<double>& values, const VariogramParameters& parameters);
 
@@ -62,7 +61,7 @@ public:
     * @param composites Composites.
     * @return Block krigged value.
     */
-   static double KrigeOneBlock(const double blockX, const double blockY, const double blockZ,
+   static std::optional<double> KrigeOneBlock(double blockX, double blockY, double blockZ,
       const KrigingParameters& parameters, const Composites& composites);
 
    /**
@@ -77,17 +76,15 @@ public:
    static void RunKriging(Blocks& blocks, const KrigingParameters& parameters, const Composites& composites);
 
 private:
-
-   /**
-    * @brief Calculates the Euclidean distance between points p1 and p2.
-    */
-   static double EuclideanDistance(const double x1, const double y1, const double z1, 
-      const double x2, const double y2, const double z2);
-
    /**
     * @brief Determines the number of threads to use based on the system processor information and number of blocks.
     *
     * Default 8 threads if system information is unknown. 
     */
-   static size_t GetThreadBatchSize(const size_t numBlocks);
+   static size_t GetThreadBatchSize(size_t numBlocks);
+
+   /**
+    * @brief Calculates the Euclidean distance between points p1 and p2.
+    */
+   static inline double EuclideanDistance(double x1, double y1, double z1, double x2, double y2, double z2);
 };

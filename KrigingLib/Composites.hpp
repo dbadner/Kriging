@@ -34,7 +34,7 @@ public:
 	 * First row in csv must contain column headers.
 	 * Required columns: 'X', 'Y', 'Z', 'Grade'.
 	 */
-	Composites(const std::string csvFilePath, const CoordinateExtents blockExtents, const double maxSearchRadius);
+	Composites(const std::string& csvFilePath, const CoordinateExtents& blockExtents, double maxSearchRadius);
 
 	/**
 	 * @brief Initializes composites by copying input vectors of x,y,z coordinates, and grades
@@ -51,27 +51,27 @@ public:
 	/**
 	 * @brief Get X value at composite index i
 	 */
-	const double& GetX(size_t& i) const { return X[i]; }
+	double GetX(size_t i) const { return X[i]; }
 
 	/**
 	 * @brief Get Y value at composite index i
 	 */
-	const double& GetY(size_t& i) const { return Y[i]; }
+	double GetY(size_t i) const { return Y[i]; }
 
 	/**
 	 * @brief Get Z value at composite index i
 	 */
-	const double& GetZ(size_t& i) const { return Z[i]; }
+	double GetZ(size_t i) const { return Z[i]; }
 
 	/**
 	 * @brief Get grade value at composite index i
 	 */
-	const double& GetGrade(size_t& i) const { return Grade[i]; }
+	double GetGrade(size_t i) const { return Grade[i]; }
 
 	/**
 	 * @brief Get number of composites
 	 */
-	const size_t& GetSize() const { return X.size(); }
+	size_t GetSize() const { return X.size(); }
 
 	/**
 	 * @brief Finds the nearest n composites to the given coordinates, constrained by a maximum spherical search distance.
@@ -81,16 +81,16 @@ public:
 	 * @maxDist Maximum search radius from the search point
 	 * @return Nearest composite result, comprising vectors of composite indices in order of increasing distance, and corresponding distances.
 	 */
-	NearestCompositesResult FindNearestComposites(const double x, const double y, const double z, const int n, const double maxDist) const;
+	NearestCompositesResult FindNearestComposites(double x, double y, double z, int n, double maxDist) const;
 
 	/**
 	 * @brief Required methods below for nanoflann.
 	 */
 	size_t kdtree_get_point_count() const;
 
-	double kdtree_distance(const double* p1, const size_t idxp2) const;
+	double kdtree_distance(const double* p1, size_t idxp2) const;
 
-	double kdtree_get_pt(const size_t idx, const int dim) const;
+	double kdtree_get_pt(size_t idx, int dim) const;
 
 	template <class BBOX>
 	bool kdtree_get_bbox(BBOX&) const { return false; }
@@ -120,7 +120,7 @@ private:
 	 * @param blockExtents X,Y,Z coordinate extents of the blocks to be krigged
 	 * @param maxSearchRadius maximum search radius for the krigging
 	 */
-	void ReadCompositesFromCSV(const std::string& filePath, const CoordinateExtents& blockExtents, const double maxSearchRadius);
+	void ReadCompositesFromCSV(const std::string& filePath, const CoordinateExtents& blockExtents, double maxSearchRadius);
 
 	/**
 	 * @brief Read in composite data from CSV.
@@ -130,7 +130,7 @@ private:
 	/**
 	 * @brief Checks if composite is relevant based on interpolation extents.
 	 */
-	static bool IsRelevantComposite(const double x, const double y, const double z, const double grade, const CoordinateExtents& extents);
+	static bool IsRelevantComposite(double x, double y, double z, double grade, const CoordinateExtents& extents);
 
 	/**
 	 * @brief Final data checks, then initialize Kd Tree. 

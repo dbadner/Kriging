@@ -276,7 +276,7 @@ namespace KrigingEngineTests
 		// Print out the first 5 block I, J, K, and grade values
 		for (int i = 0; i < 5; i++)
 		{
-			std::cout << "Block: " << i << ", Grade: " << blocks.Grade[i] << std::endl;
+			std::cout << "Block: " << i << ", Grade: " << blocks.Grade[i].value() << std::endl;
 		}
 	}
 
