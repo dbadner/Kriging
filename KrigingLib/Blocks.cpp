@@ -37,3 +37,23 @@ Blocks::Blocks(const BlockModelInfo& modelInfo)
 	}
 	std::cout << "Number of blocks created: " << X.size() << '\n';
 }
+
+void Blocks::WriteToCSV(const std::string& filePath) const
+{
+	std::ofstream file(filePath);
+	if (!file.is_open())
+	{
+		LogAndThrow<std::runtime_error>("Cannot write to file: " + filePath);
+	}
+
+	file << "X,Y,Z,Grade\n";
+
+	size_t numRows = GetSize();
+
+	for (size_t i = 0; i < numRows; ++i)
+	{
+		file << X[i] << "," << Y[i] << "," << Z[i] << "," << Grade[i] << "\n";
+	}
+
+	file.close();
+}

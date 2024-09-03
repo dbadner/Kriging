@@ -41,6 +41,11 @@ public:
 	 */
 	const size_t& GetSize() const { return X.size(); }
 
+	/**
+	 * @brief Writes blocks to CSV at the provided filepath
+	 */
+	void WriteToCSV(const std::string& filePath) const;
+
 private:
 	std::vector<double> X, Y, Z; // Block centroids; can only be set in the constructor
 };

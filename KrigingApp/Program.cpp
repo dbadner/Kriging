@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "../KrigingLib/Blocks.hpp"
 #include "../KrigingLib/Composites.hpp"
 #include "../KrigingLib/KrigingParameters.hpp"
@@ -33,6 +35,8 @@ void main(int argc, char* argv[])
 	// Perform kriging
 	KrigingEngine::RunKriging(blocks, parameters, composites);
 
-	// Write blocks to file
-	// TODO: TBC
+	// Write blocks to CSV in EXE directory
+	std::string outputFileName = "KrigingResults.csv";
+	std::string outputFilePath = std::filesystem::current_path().string() + "\\" + outputFileName;
+	blocks.WriteToCSV(outputFilePath);
 }
