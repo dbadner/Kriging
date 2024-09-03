@@ -155,6 +155,7 @@
     <ClInclude Include="Composites.hpp" />
     <ClInclude Include="CoordinateExtents.hpp" />
     <ClInclude Include="Globals.hpp" />
+    <ClInclude Include="Helpers.hpp" />
     <ClInclude Include="KrigingEngine.hpp" />
     <ClInclude Include="KrigingParameters.hpp" />
   </ItemGroup>

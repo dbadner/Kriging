@@ -18,7 +18,7 @@ VariogramParameters::StructureType VariogramParameters::StringToStructureType(st
 	}
 	else
 	{
-		throw std::invalid_argument("Unknown structure type: " + structure);
+		LogAndThrow<std::invalid_argument>("Invalid structure type: " + structure);
 	}
 }
 
@@ -29,7 +29,7 @@ void KrigingParameters::SerializeParameters(const std::string& filePath)
 	std::ifstream file(filePath);
 	if (!file.is_open())
 	{
-		throw std::runtime_error("File does not exist or cannot be opened: " + filePath);
+		LogAndThrow<std::runtime_error>("File does not exist or cannot be opened: " + filePath);
 	}
 
 	nlohmann::json j;
@@ -39,7 +39,7 @@ void KrigingParameters::SerializeParameters(const std::string& filePath)
 	}
 	catch (const nlohmann::json::parse_error& e)
 	{
-		throw std::runtime_error("JSON parsing error: " + std::string(e.what()) + "\nFile: " + filePath);
+		LogAndThrow<std::runtime_error>("JSON parsing error. Ensure input file follows the correct JSON format. File: " + filePath);
 	}
 
 	try
@@ -98,7 +98,7 @@ void KrigingParameters::SerializeParameters(const std::string& filePath)
 	}
 	catch (const nlohmann::json::exception& e)
 	{
-		throw std::runtime_error("Parameter serialization error: " + std::string(e.what()));
+		LogAndThrow<std::runtime_error>("Parameter serialization error: " + std::string(e.what()));
 	}
 
 	ValidateParameters();
@@ -116,15 +116,15 @@ void KrigingParameters::ValidateKrigingParameters()
 {
 	if (MinNumComposites > MaxNumComposites)
 	{
-		throw std::invalid_argument("Minimum number of composites cannot be greater than maximum number of composites.");
+		LogAndThrow<std::invalid_argument>("Minimum number of composites cannot be greater than maximum number of composites.");
 	}
 	if (MaxNumComposites < 1)
 	{
-		throw std::invalid_argument("Maximum number of composites must be greater than zero.");
+		LogAndThrow<std::invalid_argument>("Maximum number of composites must be greater than zero.");
 	}
 	if (MaxRadius <= 0)
 	{
-		throw std::invalid_argument("Maximum search radius must be greater than zero.");
+		LogAndThrow<std::invalid_argument>("Maximum number of composites must be greater than zero.");
 	}
 }
 
@@ -132,15 +132,15 @@ void KrigingParameters::ValidateVariogramParameters()
 {
 	if (VariogramParameters.Sill <= 0)
 	{
-		throw std::invalid_argument("Variogram sill must be greater than zero.");
+		LogAndThrow<std::invalid_argument>("Variogram sill must be greater than zero.");
 	}
 	if (VariogramParameters.Nugget < 0 || VariogramParameters.Nugget > VariogramParameters.Sill)
 	{
-		throw std::invalid_argument("Variogram nugget must be between zero and the sill.");
+		LogAndThrow<std::invalid_argument>("Variogram nugget must be between zero and the sill.");
 	}
 	if (VariogramParameters.Range < mDoubleValMin)
 	{
-		throw std::invalid_argument("Variogram range must be greater than zero.");
+		LogAndThrow<std::invalid_argument>("Variogram range must be greater than zero.");
 	}
 }
 
@@ -150,19 +150,19 @@ void KrigingParameters::ValidateBlockParameters()
 
 	if (BlockParameters.BlockCountI < 1 || BlockParameters.BlockCountJ < 1 || BlockParameters.BlockCountK < 1)
 	{
-		throw std::invalid_argument("Block count must be at least one.");
+		LogAndThrow<std::invalid_argument>("Block count must be at least one.");
 	}
 	if ((coordExtents.MaxX - coordExtents.MinX) / BlockParameters.BlockCountI < mDoubleValMin)
 	{
-		throw std::invalid_argument("Invalid block X size.");
+		LogAndThrow<std::invalid_argument>("Invalid block X size.");
 	}
 	if ((coordExtents.MaxY - coordExtents.MinY) / BlockParameters.BlockCountJ < mDoubleValMin)
 	{
-		throw std::invalid_argument("Invalid block Y size.");
+		LogAndThrow<std::invalid_argument>("Invalid block Y size.");
 	}
 	if ((coordExtents.MaxZ - coordExtents.MinZ) / BlockParameters.BlockCountK < mDoubleValMin)
 	{
-		throw std::invalid_argument("Invalid block Z size.");
+		LogAndThrow<std::invalid_argument>("Invalid block Z size.");
 	}
 }
 
@@ -176,7 +176,7 @@ KrigingParameters::KrigingType KrigingParameters::StringToKrigingType(std::strin
 	}
 	else
 	{
-		throw std::invalid_argument("Unknown kriging type: " + string);
+		LogAndThrow<std::invalid_argument>("Unknown kriging type: " + string);
 	}
 	// TODO: Add more kriging types once implemented
 }

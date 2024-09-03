@@ -73,7 +73,7 @@ void Composites::ReadCompositesFromCSV(const std::string& filePath, const Coordi
 	std::ifstream file(filePath);
 	if (!file)
 	{
-		throw std::runtime_error("File does not exist or cannot be opened: " + filePath);
+		LogAndThrow<std::runtime_error>("File does not exist or cannot be opened: " + filePath);
 	}
 
 	std::string line;
@@ -108,7 +108,7 @@ void Composites::ReadCompositesFromCSV(const std::string& filePath, const Coordi
 		if (columnIndices.find(col) == columnIndices.end())
 		{
 			file.close();
-			throw std::runtime_error("Missing required column: " + col);
+			LogAndThrow<std::invalid_argument>("Missing required column: " + col);
 		}
 	}
 
@@ -230,11 +230,11 @@ void Composites::FinishInitialization()
 	// Final checks
 	if (Y.size() != numComposite || Z.size() != numComposite || Grade.size() != numComposite)
 	{
-		throw std::invalid_argument("X,Y,Z,Grade vectors must be the same size.");
+		LogAndThrow<std::invalid_argument>("X,Y,Z,Grade vectors must be the same size.");
 	}
 	if (numComposite < 1)
 	{
-		throw std::invalid_argument("At least one valid composite is required.");
+		LogAndThrow<std::invalid_argument>("At least one valid composite is required.");
 	}
 
 	// Build KdTree

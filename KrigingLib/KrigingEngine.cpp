@@ -19,7 +19,7 @@ double KrigingEngine::Variogram(const double h, const VariogramParameters& param
 	case VariogramParameters::Gaussian:
 		return parameters.Nugget + contribution * (1 - exp(-3 * ha * ha));
 	default:
-		throw std::invalid_argument("Unsupported variogram model");
+		LogAndThrow<std::invalid_argument>("Unsupported variogram model");
 	}
 
 	//TODO: Add support for anisotropy and rotated variograms with rotation matrix

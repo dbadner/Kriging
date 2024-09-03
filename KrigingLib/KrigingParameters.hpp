@@ -1,11 +1,14 @@
 #pragma once
 
-#include "CoordinateExtents.hpp"
-#include "include\json.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <limits>
+
+#include "CoordinateExtents.hpp"
+#include "include\json.hpp"
+#include "Helpers.hpp"
+
 
 /**
  * @brief Parameters to define the variogram fit
