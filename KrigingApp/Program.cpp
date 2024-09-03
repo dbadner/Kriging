@@ -11,8 +11,8 @@
  * @brief Entry point for the console application.
  * 
  * Two arguments are required:
- * 1. <KrigingParametersFile> : Path to the JSON file containing kriging parameters.
- * 2. <CompositesFile>        : Path to the CSV file containing composites data.
+ * 1. KrigingParametersFile: Path to the JSON file containing kriging parameters.
+ * 2. CompositesFile: Path to the CSV file containing composites data.
  */
 void main(int argc, char* argv[])
 {
